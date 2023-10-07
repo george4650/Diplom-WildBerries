@@ -1,0 +1,1 @@
+create sequence if not exists humanresource.client_sq as bigint start with 1;
