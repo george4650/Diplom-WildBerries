@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION supply.supply_ins(_data jsonb) returns json
+CREATE OR REPLACE FUNCTION supply.supply_ins(_data jsonb, _staff_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -28,16 +28,21 @@ BEGIN
            _dt                         as dt
     FROM tmp t;
 
+    WITH cte_upd AS (
+        UPDATE petshop.storage
+            SET quantity = quantity + t.quantity AND selling_price = t.purchase_price + t.purchase_price * 0.20
+            FROM (SELECT shop_id,
+                         good_id,
+                         purchase_price,
+                         quantity
+                  FROM tmp) as t
+            WHERE t.shop_id = shop_id
+                AND t.good_id = good_id
+            RETURNING *)
 
-    UPDATE petshop.storage
-    SET quantity = quantity + t.quantity AND selling_price = t.purchase_price + t.purchase_price * 0.2
-    FROM (SELECT shop_id,
-                 good_id,
-                 purchase_price,
-                 quantity
-          FROM tmp) as t
-    WHERE t.shop_id = shop_id
-      AND t.good_id = good_id;
+    INSERT INTO history.storagechanges(shop_id, good_id, selling_price, quantity, staff_id, ch_dt)
+    SELECT cu.shop_id, cu.good_id, cu.selling_price, cu.quantity, _staff_id, _dt
+    FROM cte_upd cu;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

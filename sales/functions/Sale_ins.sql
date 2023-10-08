@@ -43,7 +43,7 @@ BEGIN
            t.shop_id,
            (select selling_price
             from petshop.storage s
-            where s.good_id = t.good_id) as price,
+            where s.good_id = t.good_id and shop_id = t.shop_id) as price,
            (select selling_price * humanresource.count_discount((select client_id
                                                                  from humanresource.cards c
                                                                  where c.card_id = t.card_id

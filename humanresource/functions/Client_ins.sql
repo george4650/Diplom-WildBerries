@@ -47,6 +47,9 @@ BEGIN
            _employee_id,
            _dt;
 
+    INSERT INTO history.clientschanges (client_id, first_name, surname, phone, email, staff_id, ch_dt)
+    SELECT _client_id, _first_name, _surname, _phone, _email, _employee_id, _dt;
+
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
 $$;

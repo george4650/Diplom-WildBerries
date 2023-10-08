@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS petshop.storage
     good_id       integer,
     selling_price integer NOT NULL,
     quantity      integer,
-    CONSTRAINT pk_storage_shop_id_animal_id PRIMARY KEY (shop_id, good_id)
+    CONSTRAINT pk_storage_shop_id_good_id PRIMARY KEY (shop_id, good_id)
 )
