@@ -12,7 +12,7 @@ BEGIN
     select salary + humanresource.count_premium(_employee_id) + salary * humanresource.count_bonus(_sales_amount) / 100
     into _salary
     from humanresource.employees e
-    where employee_id = _employee_id;
+    where employee_id = _employee_id and e.deleted_at is null;
 
     return _salary;
 END

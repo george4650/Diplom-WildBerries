@@ -41,11 +41,10 @@ BEGIN
            _email
     RETURNING client_id INTO _client_id;
 
-    INSERT INTO humanresource.cards (card_id, client_id, employee_id, is_archived, dt)
+    INSERT INTO humanresource.cards (card_id, client_id, employee_id, dt)
     SELECT nextval('humanresource.card_sq') as card_id,
            _client_id,
            _employee_id,
-           false,
            _dt;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);

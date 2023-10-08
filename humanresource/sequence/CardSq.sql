@@ -1,1 +1,0 @@
-create sequence if not exists humanresource.card_sq as bigint start with 1;

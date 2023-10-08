@@ -5,6 +5,5 @@ CREATE TABLE IF NOT EXISTS humanresource.suppliers
     name        varchar(100) NOT NULL,
     phone       VARCHAR(11)  NOT NULL,
     email       varchar(50),
-    dt  TIMESTAMPTZ NOT NULL,
     deleted_at  TIMESTAMPTZ
 )

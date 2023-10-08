@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS history.employeeschanges
     phone       varchar(11) NOT NULL,
     email       varchar(50),
     is_deleted  BOOLEAN,
+    staff_id    INT         NOT NULL,
     ch_dt       TIMESTAMPTZ NOT NULL
 )

@@ -1,7 +1,9 @@
+DROP TABLE petshop.goods
+
 CREATE TABLE IF NOT EXISTS petshop.goods
 (
-    good_id   bigint
+    good_id integer
         CONSTRAINT pk_goods PRIMARY KEY,
-    description varchar(1500) NOT NULL,
-    dt          TIMESTAMPTZ   NOT NULL
+    good_type   integer       NOT NULL,
+    description varchar(1500) NOT NULL
 )

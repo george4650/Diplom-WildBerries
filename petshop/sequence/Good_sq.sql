@@ -1,0 +1,1 @@
+create sequence if not exists petshop.good_sq as integer start with 1;

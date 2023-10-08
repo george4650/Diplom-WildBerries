@@ -7,3 +7,13 @@ CREATE SCHEMA IF NOT EXISTS humanresource;
 CREATE SCHEMA IF NOT EXISTS supply;
 
 CREATE SCHEMA IF NOT EXISTS history;
+
+CREATE SCHEMA IF NOT EXISTS dictionary;
+
+
+DROP SCHEMA IF EXISTS sales cascade;
+DROP SCHEMA IF EXISTS petshop cascade;
+DROP SCHEMA IF EXISTS humanresource cascade;
+DROP SCHEMA IF EXISTS supply cascade;
+DROP SCHEMA IF EXISTS history cascade;
+DROP SCHEMA IF EXISTS dictionary cascade;

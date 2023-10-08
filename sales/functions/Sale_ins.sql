@@ -33,17 +33,24 @@ BEGIN
     END IF;
 
     INSERT INTO sales.sales AS s (sale_id, client_id, good_id, employee_id, shop_id, price, discount, quantity, dt)
-    SELECT nextval('sales.sale_sq')      as                                                                sale_id,
-           (select client_id from humanresource.cards c where c.card_id = t.card_id),
+    SELECT nextval('sales.sale_sq')      as sale_id,
+           (select client_id
+            from humanresource.cards c
+            where c.card_id = t.card_id
+              and (c.deleted_at is null OR c.deleted_at = false)),
            t.good_id,
            t.employee_id,
            t.shop_id,
            (select selling_price
             from petshop.storage s
-            where s.good_id = t.good_id) as                                                                price,
-           (select selling_price * humanresource.count_discount((select client_id from humanresource.cards c where c.card_id = t.card_id)) / 100 from petshop.storage s) discount,
+            where s.good_id = t.good_id) as price,
+           (select selling_price * humanresource.count_discount((select client_id
+                                                                 from humanresource.cards c
+                                                                 where c.card_id = t.card_id
+                                                                   and (c.deleted_at is null OR c.deleted_at = false))) / 100
+            from petshop.storage s)      as discount,
            t.quantity,
-           _dt                           as                                                                dt
+           _dt                           as dt
     FROM tmp t;
 
     UPDATE petshop.storage
