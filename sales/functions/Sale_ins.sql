@@ -33,7 +33,7 @@ BEGIN
     END IF;
 
     INSERT INTO sales.sales AS s (sale_id, client_id, good_id, employee_id, shop_id, price, discount, quantity, dt)
-    SELECT nextval('sales.sale_sq')      as sale_id,
+    SELECT nextval('sales.sale_sq')    as sale_id,
            (select client_id
             from humanresource.cards c
             where c.card_id = t.card_id
@@ -43,24 +43,33 @@ BEGIN
            t.shop_id,
            (select selling_price
             from petshop.storage s
-            where s.good_id = t.good_id and shop_id = t.shop_id) as price,
+            where s.good_id = t.good_id
+              and shop_id = t.shop_id) as price,
            (select selling_price * humanresource.count_discount((select client_id
                                                                  from humanresource.cards c
                                                                  where c.card_id = t.card_id
-                                                                   and (c.deleted_at is null OR c.deleted_at = false))) / 100
-            from petshop.storage s)      as discount,
+                                                                   and (c.deleted_at is null OR c.deleted_at = false))) /
+                   100
+            from petshop.storage s)    as discount,
            t.quantity,
-           _dt                           as dt
+           _dt                         as dt
     FROM tmp t;
 
-    UPDATE petshop.storage
-    SET quantity = quantity - t.quantity
-    FROM (SELECT shop_id,
-                 good_id,
-                 quantity
-          FROM tmp) as t
-    WHERE t.shop_id = shop_id
-      AND t.good_id = good_id;
+
+    WITH cte_upd AS (
+        UPDATE petshop.storage
+            SET quantity = quantity - t.quantity
+            FROM (SELECT shop_id,
+                         good_id,
+                         quantity
+                  FROM tmp) as t
+            WHERE t.shop_id = shop_id
+                AND t.good_id = good_id
+            RETURNING *)
+
+    INSERT INTO history.storagechanges(shop_id, good_id, selling_price, quantity, ch_dt)
+    SELECT cu.shop_id, cu.good_id, cu.selling_price, cu.quantity, _dt
+    FROM cte_upd cu;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

@@ -1,5 +1,3 @@
-DROP TABLE petshop.goods
-
 CREATE TABLE IF NOT EXISTS petshop.goods
 (
     good_id integer
