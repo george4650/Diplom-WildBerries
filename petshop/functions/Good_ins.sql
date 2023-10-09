@@ -8,18 +8,31 @@ DECLARE
 BEGIN
 
     WITH cte_ins AS (
-        INSERT INTO petshop.goods (good_id, good_type, description)
-            SELECT nextval('petshop.good_sq') as good_id,
-                   s.description,
-                   s.good_type
+        INSERT INTO petshop.goods (nm_id, name, good_type, description)
+            SELECT nextval('petshop.good_sq') as nm_id,
+                   name,
+                   s.good_type,
+                   s.description
             FROM jsonb_to_record(_src) as s (
-                                             description varchar(1500),
-                                             good_type integer
+                                             name varchar(100),
+                                             good_type integer,
+                                             description varchar(1500)
                 )
             RETURNING *)
 
-    INSERT INTO history.goodschanges(good_id, good_type, description, staff_id, ch_dt)
-    SELECT ci.good_id, ci.good_type, ci.description, _staff_id, _dt
+    INSERT
+    INTO history.goodschanges(nm_id,
+                              name,
+                              good_type,
+                              description,
+                              staff_id,
+                              ch_dt)
+    SELECT ci.nm_id,
+           name,
+           ci.good_type,
+           ci.description,
+           _staff_id,
+           _dt
     FROM cte_ins ci;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);

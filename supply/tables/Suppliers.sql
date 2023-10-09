@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS humanresource.suppliers
+CREATE TABLE IF NOT EXISTS supply.suppliers
 (
     supplier_id integer
         CONSTRAINT pk_suppliers PRIMARY KEY,

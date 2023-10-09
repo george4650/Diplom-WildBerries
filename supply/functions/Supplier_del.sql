@@ -7,7 +7,7 @@ DECLARE
     _dt TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
 BEGIN
 
-    UPDATE humanresource.suppliers
+    UPDATE supply.suppliers
     SET deleted_at = _dt
     WHERE supplier_id = _supplier_id;
 

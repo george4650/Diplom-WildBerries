@@ -43,8 +43,20 @@ BEGIN
         RETURNING *
         )
 
-    INSERT INTO history.clientschanges (client_id, first_name, surname, phone, email, staff_id, ch_dt)
-    SELECT cu.client_id, cu.first_name, cu.surname, cu.phone, cu.email, _staff_id, _dt
+    INSERT INTO history.clientschanges (client_id,
+                                        first_name,
+                                        surname,
+                                        phone,
+                                        email,
+                                        staff_id,
+                                        ch_dt)
+    SELECT cu.client_id,
+           cu.first_name,
+           cu.surname,
+           cu.phone,
+           cu.email,
+           _staff_id,
+           _dt
     FROM cte_upd cu;
 
 

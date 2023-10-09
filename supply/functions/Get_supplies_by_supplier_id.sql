@@ -10,7 +10,7 @@ BEGIN
         FROM (SELECT supply_id,
                      shop_id,
                      supplier_id,
-                     good_id,
+                     nm_id,
                      purchase_price,
                      quantity,
                      dt

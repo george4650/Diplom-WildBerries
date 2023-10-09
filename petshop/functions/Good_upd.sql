@@ -10,18 +10,30 @@ BEGIN
 
     WITH cte_upd AS (
         UPDATE petshop.goods
-            SET good_type = s.good_type AND description = s.description
-            FROM (SELECT good_id, good_type, description
+            SET good_type = s.good_type, description = s.description, name = s.name
+            FROM (SELECT nm_id, good_type, description
                   FROM jsonb_to_record(_src) as s (
-                                                   good_id integer,
+                                                   nm_id integer,
+                                                   name varchar(100),
                                                    good_type integer,
                                                    description varchar(1500)
                       )) as s
-            WHERE good_id = s.good_id
+            WHERE nm_id = s.nm_id
             RETURNING *)
 
-    INSERT INTO history.goodschanges(good_id, good_type, description, staff_id, ch_dt)
-    SELECT cu.good_id, cu.good_type, cu.description, _staff_id, _dt
+    INSERT
+    INTO history.goodschanges(nm_id,
+                              name,
+                              good_type,
+                              description,
+                              staff_id,
+                              ch_dt)
+    SELECT cu.nm_id,
+           name,
+           cu.good_type,
+           cu.description,
+           _staff_id,
+           _dt
     FROM cte_upd cu;
 
 

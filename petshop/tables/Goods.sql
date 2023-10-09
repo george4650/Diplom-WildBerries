@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS petshop.goods
 (
-    good_id     integer
+    nm_id     integer
         CONSTRAINT pk_goods PRIMARY KEY,
     name        varchar(100)  NOT NULL,
     good_type   integer       NOT NULL,

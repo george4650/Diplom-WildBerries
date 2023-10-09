@@ -9,16 +9,16 @@ DECLARE
 BEGIN
 
     CREATE TEMP TABLE tmp ON COMMIT DROP AS
-    SELECT s.good_id, s.card_id, s.employee_id, s.shop_id, s.quantity, SUM(st.quantity) as balance_in_stock
+    SELECT s.nm_id, s.card_id, s.employee_id, s.shop_id, s.quantity, SUM(st.quantity) as balance_in_stock
     FROM jsonb_to_recordset(_data) as s (
-                                         good_id BIGINT,
+                                         nm_id BIGINT,
                                          card_id INT,
                                          employee_id INT,
                                          shop_id INT,
                                          quantity INT
         )
-             INNER JOIN petshop.Storage st on st.good_id = s.good_id AND st.shop_id = s.shop_id
-    GROUP BY s.good_id, s.card_id, s.employee_id, s.shop_id, s.quantity;
+             INNER JOIN petshop.Storage st on st.nm_id = s.nm_id AND st.shop_id = s.shop_id
+    GROUP BY s.nm_id, s.card_id, s.employee_id, s.shop_id, s.quantity;
 
     SELECT CASE
                WHEN t.quantity IS NULL OR t.quantity <= 0 THEN 'Количество покупаемого товара не может быть равно 0!'
@@ -32,18 +32,18 @@ BEGIN
         RETURN public.errmessage(' sales.sale_good', _err_message, NULL);
     END IF;
 
-    INSERT INTO sales.sales AS s (sale_id, client_id, good_id, employee_id, shop_id, price, discount, quantity, dt)
+    INSERT INTO sales.sales AS s (sale_id, client_id, nm_id, employee_id, shop_id, price, discount, quantity, dt)
     SELECT nextval('sales.sale_sq')    as sale_id,
            (select client_id
             from humanresource.cards c
             where c.card_id = t.card_id
               and (c.deleted_at is null OR c.deleted_at = false)),
-           t.good_id,
+           t.nm_id,
            t.employee_id,
            t.shop_id,
            (select selling_price
             from petshop.storage s
-            where s.good_id = t.good_id
+            where s.nm_id = t.nm_id
               and shop_id = t.shop_id) as price,
            (select selling_price * humanresource.count_discount((select client_id
                                                                  from humanresource.cards c
@@ -60,15 +60,15 @@ BEGIN
         UPDATE petshop.storage
             SET quantity = quantity - t.quantity
             FROM (SELECT shop_id,
-                         good_id,
+                         nm_id,
                          quantity
                   FROM tmp) as t
             WHERE t.shop_id = shop_id
-                AND t.good_id = good_id
+                AND t.nm_id = nm_id
             RETURNING *)
 
-    INSERT INTO history.storagechanges(shop_id, good_id, selling_price, quantity, ch_dt)
-    SELECT cu.shop_id, cu.good_id, cu.selling_price, cu.quantity, _dt
+    INSERT INTO history.storagechanges(shop_id, nm_id, selling_price, quantity, ch_dt)
+    SELECT cu.shop_id, cu.nm_id, cu.selling_price, cu.quantity, _dt
     FROM cte_upd cu;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);

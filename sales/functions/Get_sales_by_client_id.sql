@@ -14,7 +14,7 @@ BEGIN
                      s.dt
               FROM sales.sales s
                        inner join humanresource.clients c on s.client_id = c.client_id
-                       inner join petshop.goods g on g.good_id = s.good_id
+                       inner join petshop.goods g on g.nm_id = s.nm_id
               WHERE c.client_id = _client_id
                 AND dt::date >= _start_date
                 AND dt::date >= _endDate) res;

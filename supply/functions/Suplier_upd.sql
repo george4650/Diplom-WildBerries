@@ -12,7 +12,7 @@ DECLARE
 BEGIN
 
 
-    SELECT COALESCE(supplier_id, nextval('humanresource.supplier_sq')) as supplier_id,
+    SELECT COALESCE(supplier_id, nextval('supply.supplier_sq')) as supplier_id,
            s.name,
            s.phone,
            s.email
@@ -25,7 +25,7 @@ BEGIN
         );
 
     WITH ins_cte AS (
-        INSERT INTO humanresource.suppliers AS e (supplier_id,
+        INSERT INTO supply.suppliers AS e (supplier_id,
                                                   name,
                                                   phone,
                                                   email

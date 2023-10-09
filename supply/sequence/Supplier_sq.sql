@@ -1,0 +1,1 @@
+create sequence if not exists supply.supplier_sq as integer start with 1;
