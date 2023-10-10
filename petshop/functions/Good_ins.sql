@@ -8,15 +8,17 @@ DECLARE
 BEGIN
 
     WITH cte_ins AS (
-        INSERT INTO petshop.goods (nm_id, name, good_type, description)
+        INSERT INTO petshop.goods (nm_id, name, good_type, description, dt)
             SELECT nextval('petshop.good_sq') as nm_id,
-                   name,
+                   s.name,
                    s.good_type,
-                   s.description
+                   s.description,
+                   s.dt
             FROM jsonb_to_record(_src) as s (
                                              name varchar(100),
                                              good_type integer,
-                                             description varchar(1500)
+                                             description varchar(1500),
+                                             dt timestamptz
                 )
             RETURNING *)
 
@@ -26,12 +28,14 @@ BEGIN
                               good_type,
                               description,
                               staff_id,
+                              dt,
                               ch_dt)
     SELECT ci.nm_id,
            name,
            ci.good_type,
            ci.description,
            _staff_id,
+           _dt,
            _dt
     FROM cte_ins ci;
 

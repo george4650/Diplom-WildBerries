@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS history.supplierschanges
     name        varchar(100) NOT NULL,
     phone       VARCHAR(11)  NOT NULL,
     email       varchar(50),
-    staff_id    INT         NOT NULL,
+    staff_id    INT          NOT NULL,
     ch_dt       TIMESTAMPTZ  NOT NULL
 )

@@ -8,7 +8,12 @@ DECLARE
 BEGIN
 
     WITH cte_ins AS (
-        INSERT INTO supply.supplies AS s (supply_id, shop_id, supplier_id, nm_id, purchase_price, quantity, dt)
+        INSERT INTO supply.supplies AS s (supply_id,
+                                          shop_id,
+                                          supplier_id,
+                                          nm_id,
+                                          purchase_price,
+                                          quantity, dt)
             SELECT nextval('supply.supply_sq') as supply_id,
                    shop_id,
                    supplier_id,
@@ -27,7 +32,8 @@ BEGIN
 
          cte_upd AS (
              UPDATE petshop.storage
-                 SET quantity = quantity + ci.quantity, selling_price = ci.purchase_price + ci.purchase_price * m.markup
+                 SET quantity = quantity + ci.quantity,
+                     selling_price = ci.purchase_price + ci.purchase_price * m.markup
                  FROM (SELECT shop_id,
                               nm_id,
                               purchase_price,

@@ -33,7 +33,11 @@ BEGIN
     END IF;
 
 
-    INSERT INTO humanresource.clients (client_id, first_name, surname, phone, email)
+    INSERT INTO humanresource.clients (client_id,
+                                       first_name,
+                                       surname,
+                                       phone,
+                                       email)
     SELECT nextval('humanresource.client_sq') as client_id,
            _first_name,
            _surname,
@@ -41,7 +45,10 @@ BEGIN
            _email
     RETURNING client_id INTO _client_id;
 
-    INSERT INTO humanresource.cards (card_id, client_id, employee_id, dt)
+    INSERT INTO humanresource.cards (card_id,
+                                     client_id,
+                                     employee_id,
+                                     dt)
     SELECT nextval('humanresource.card_sq') as card_id,
            _client_id,
            _employee_id,

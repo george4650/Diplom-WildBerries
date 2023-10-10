@@ -5,9 +5,16 @@ AS
 $$
 BEGIN
 
-    RETURN jsonb_build_object('employee_id', employee_id, 'shop_id', shop_id, 'first_name', first_name,
-                              'surname', surname, 'patronymic', patronymic, 'salary', salary, 'post', post,
-                              'phone', phone, 'email', email, 'deleted_at', deleted_at)
+    RETURN jsonb_build_object('employee_id', employee_id,
+                              'shop_id', shop_id,
+                              'first_name', first_name,
+                              'surname', surname,
+                              'patronymic', patronymic,
+                              'salary', salary,
+                              'post', post,
+                              'phone', phone,
+                              'email', email,
+                              'deleted_at', deleted_at)
         FROM (SELECT employee_id,
                      shop_id,
                      first_name,

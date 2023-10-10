@@ -10,8 +10,12 @@ BEGIN
 
     WITH cte_upd AS (
         UPDATE petshop.storage
-            SET selling_price = s.selling_price AND quantity = s.quantity
-            FROM (SELECT shop_id, nm_id, selling_price, quantity
+            SET selling_price = s.selling_price,
+                quantity = s.quantity
+            FROM (SELECT shop_id,
+                         nm_id,
+                         selling_price,
+                         quantity
                   FROM jsonb_to_record(_src) as s (
                                                    shop_id integer,
                                                    nm_id integer,

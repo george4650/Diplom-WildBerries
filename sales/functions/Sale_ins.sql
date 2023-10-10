@@ -9,7 +9,12 @@ DECLARE
 BEGIN
 
     CREATE TEMP TABLE tmp ON COMMIT DROP AS
-    SELECT s.nm_id, s.card_id, s.employee_id, s.shop_id, s.quantity, SUM(st.quantity) as balance_in_stock
+    SELECT s.nm_id,
+           s.card_id,
+           s.employee_id,
+           s.shop_id,
+           s.quantity,
+           SUM(st.quantity) as balance_in_stock
     FROM jsonb_to_recordset(_data) as s (
                                          nm_id BIGINT,
                                          card_id INT,
@@ -32,7 +37,15 @@ BEGIN
         RETURN public.errmessage(' sales.sale_good', _err_message, NULL);
     END IF;
 
-    INSERT INTO sales.sales AS s (sale_id, client_id, nm_id, employee_id, shop_id, price, discount, quantity, dt)
+    INSERT INTO sales.sales AS s (sale_id,
+                                  client_id,
+                                  nm_id,
+                                  employee_id,
+                                  shop_id,
+                                  price,
+                                  discount,
+                                  quantity,
+                                  dt)
     SELECT nextval('sales.sale_sq')    as sale_id,
            (select client_id
             from humanresource.cards c

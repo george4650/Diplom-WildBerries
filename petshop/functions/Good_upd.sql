@@ -10,13 +10,18 @@ BEGIN
 
     WITH cte_upd AS (
         UPDATE petshop.goods
-            SET good_type = s.good_type, description = s.description, name = s.name
-            FROM (SELECT nm_id, good_type, description
+            SET good_type = s.good_type,
+                description = s.description,
+                name = s.name
+            FROM (SELECT nm_id,
+                         good_type,
+                         description
                   FROM jsonb_to_record(_src) as s (
                                                    nm_id integer,
                                                    name varchar(100),
                                                    good_type integer,
-                                                   description varchar(1500)
+                                                   description varchar(1500),
+                                                   dt timestamptz
                       )) as s
             WHERE nm_id = s.nm_id
             RETURNING *)
@@ -27,12 +32,14 @@ BEGIN
                               good_type,
                               description,
                               staff_id,
+                              dt,
                               ch_dt)
     SELECT cu.nm_id,
-           name,
+           cu.name,
            cu.good_type,
            cu.description,
            _staff_id,
+           cu.dt,
            _dt
     FROM cte_upd cu;
 
