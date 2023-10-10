@@ -13,12 +13,11 @@ BEGIN
                    s.name,
                    s.good_type,
                    s.description,
-                   s.dt
+                   _dt
             FROM jsonb_to_record(_src) as s (
                                              name varchar(100),
                                              good_type integer,
-                                             description varchar(1500),
-                                             dt timestamptz
+                                             description varchar(1500)
                 )
             RETURNING *)
 
