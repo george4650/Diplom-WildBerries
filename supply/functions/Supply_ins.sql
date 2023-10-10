@@ -13,7 +13,8 @@ BEGIN
                                           supplier_id,
                                           nm_id,
                                           purchase_price,
-                                          quantity, dt)
+                                          quantity,
+                                          dt)
             SELECT nextval('supply.supply_sq') as supply_id,
                    shop_id,
                    supplier_id,
