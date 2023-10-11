@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS humanresource.clients
     phone      varchar(11) NOT NULL,
     email      varchar(50),
     CONSTRAINT uc_clients_phone UNIQUE (phone)
-)
+);

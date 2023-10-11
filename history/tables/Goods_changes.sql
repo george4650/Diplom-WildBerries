@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS history.goodschanges
     good_type   integer       NOT NULL,
     description varchar(1500) NOT NULL,
     staff_id    INT,
-    ch_dt       TIMESTAMPTZ   NOT NULL
+    dt          timestamptz   NOT NULL,
+    ch_dt       timestamptz   NOT NULL
 )

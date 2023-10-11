@@ -16,8 +16,8 @@ BEGIN
                      dt
               FROM supply.supplies s
               WHERE s.supplier_id = _supplier_id
-                AND dt::date >= _start_date
-                AND dt::date >= _endDate) res;
+                AND dt::date >= COALESCE(_start_date, (now() - interval '100' YEAR))
+                AND dt::date <= COALESCE(_endDate, (now() + interval '100' YEAR))) res;
 
 END
 $$;

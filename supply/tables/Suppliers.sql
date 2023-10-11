@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS supply.suppliers
     phone       VARCHAR(11)  NOT NULL,
     email       varchar(50),
     deleted_at  TIMESTAMPTZ
-)
+);

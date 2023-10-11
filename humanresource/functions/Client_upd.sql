@@ -14,7 +14,11 @@ DECLARE
 BEGIN
 
 
-    SELECT client_id, first_name, surname, phone, email
+    SELECT client_id,
+           first_name,
+           surname,
+           phone,
+           email
     INTO _client_id, _first_name, _surname, _phone, _email
     FROM jsonb_to_record(_src) as s (
                                      client_id bigint,

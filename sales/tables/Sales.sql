@@ -2,12 +2,11 @@ CREATE TABLE IF NOT EXISTS sales.sales
 (
     sale_id     bigint
         CONSTRAINT pk_sales PRIMARY KEY,
-    client_id   integer,
-    nm_id     integer       NOT NULL,
-    employee_id integer       NOT NULL,
-    shop_id     integer       NOT NULL,
-    price       numeric(8, 2) NOT NULL,
-    discount    integer,
-    quantity    integer       NOT NULL,
+    card_id     integer,
+    employee_id integer      NOT NULL,
+    shop_id     smallint      NOT NULL,
+    sale_info   jsonb         NOT NULL,--nm_id, quantity, product_price
+    total_price numeric(8, 2) NOT NULL,
+    discount    smallint,
     dt          TIMESTAMPTZ   NOT NULL
-)
+);
