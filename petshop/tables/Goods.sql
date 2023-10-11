@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS petshop.goods
     description   varchar(1500) NOT NULL,
     selling_price numeric(8, 2) NOT NULL,
     dt            timestamptz   NOT NULL
-)
+);

@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS dictionary.cardtypes
     ransom_amount integer,
     discount      smallint,
     CONSTRAINT uq_cardtypes_name UNIQUE (name)
-)
+);

@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS sales.sales
     total_price numeric(8, 2) NOT NULL,
     discount    smallint,
     dt          TIMESTAMPTZ   NOT NULL
-)
+);

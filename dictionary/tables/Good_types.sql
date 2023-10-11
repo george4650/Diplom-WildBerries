@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS dictionary.goodtypes
         CONSTRAINT pk_goodtypes PRIMARY KEY,
     name      varchar(100) NOT NULL,
     CONSTRAINT uq_goodtypes_name UNIQUE (name)
-)
+);

@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS petshop.shops
         CONSTRAINT pk_shops PRIMARY KEY,
     address varchar(300) NOT NULL,
     phone   varchar(11)  NOT NULL
-)
+);

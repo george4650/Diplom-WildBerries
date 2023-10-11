@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS humanresource.employees
     email       varchar(50),
     deleted_at  TIMESTAMPTZ,
     CONSTRAINT pk_employees_employee_id_shop_id PRIMARY KEY (employee_id, shop_id)
-)
+);
