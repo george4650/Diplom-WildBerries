@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION whsync.goods_import(_src jsonb) returns json
+CREATE OR REPLACE FUNCTION whsync.goods_sync_import(_src jsonb) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

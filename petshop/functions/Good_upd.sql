@@ -24,25 +24,42 @@ BEGIN
                                                    dt timestamptz
                       )) as s
             WHERE nm_id = s.nm_id
-            RETURNING *)
+            RETURNING *),
 
-    INSERT
-    INTO history.goodschanges(nm_id,
-                              name,
-                              good_type,
-                              description,
-                              staff_id,
-                              dt,
-                              ch_dt)
-    SELECT cu.nm_id,
-           cu.name,
-           cu.good_type,
-           cu.description,
+         cte_history_ins AS (
+             INSERT INTO history.goodschanges (nm_id,
+                                               name,
+                                               good_type,
+                                               description,
+                                               staff_id,
+                                               dt,
+                                               ch_dt)
+                 SELECT cu.nm_id,
+                        cu.name,
+                        cu.good_type,
+                        cu.description,
+                        _staff_id,
+                        cu.dt,
+                        _dt
+                 FROM cte_upd cu
+                 RETURNING *)
+
+
+    INSERT INTO whsync.goodsssync (nm_id,
+                            name,
+                            good_type,
+                            description,
+                            staff_id,
+                            dt,
+                            ch_dt)
+    SELECT ch.nm_id,
+           ch.name,
+           ch.good_type,
+           ch.description,
            _staff_id,
-           cu.dt,
+           ch.dt,
            _dt
-    FROM cte_upd cu;
-
+    FROM cte_history_ins ch;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
