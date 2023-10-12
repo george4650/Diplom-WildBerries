@@ -6,7 +6,7 @@ $$
 DECLARE
     _err_message VARCHAR(500);
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _client_id   bigint;
+    _client_id   integer;
     _first_name  varchar(32);
     _surname     varchar(32);
     _phone       varchar(11);
@@ -47,10 +47,12 @@ BEGIN
 
     INSERT INTO humanresource.cards (card_id,
                                      client_id,
+                                     card_type_id,
                                      employee_id,
                                      dt)
     SELECT nextval('humanresource.card_sq') as card_id,
            _client_id,
+           1,
            _employee_id,
            _dt;
 

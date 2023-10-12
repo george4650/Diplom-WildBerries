@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS history.clientschanges
     email         varchar(50),
     staff_id      INT,
     ch_dt         TIMESTAMPTZ NOT NULL
-)
+);

@@ -15,8 +15,9 @@ BEGIN
     WITH sync_cte AS (SELECT gs.log_id,
                              gs.nm_id,
                              gs.name,
-                             gs.good_type,
+                             gs.good_type_id,
                              gs.description,
+                             gs.selling_price,
                              gs.staff_id,
                              gs.dt,
                              gs.ch_dt

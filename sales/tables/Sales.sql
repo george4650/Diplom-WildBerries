@@ -7,6 +7,6 @@ CREATE TABLE IF NOT EXISTS sales.sales
     shop_id     smallint      NOT NULL,
     sale_info   jsonb         NOT NULL,--nm_id, quantity, product_price
     total_price numeric(8, 2) NOT NULL,
-    discount    smallint,
+    discount    numeric(8, 2),
     dt          TIMESTAMPTZ   NOT NULL
 );

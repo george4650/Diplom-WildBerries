@@ -6,7 +6,7 @@ $$
 DECLARE
     _err_message VARCHAR(500);
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _client_id   bigint;
+    _client_id   integer;
     _first_name  varchar(32);
     _surname     varchar(32);
     _phone       varchar(11);
@@ -21,7 +21,7 @@ BEGIN
            email
     INTO _client_id, _first_name, _surname, _phone, _email
     FROM jsonb_to_record(_src) as s (
-                                     client_id bigint,
+                                     client_id integer,
                                      first_name varchar(32),
                                      surname varchar(32),
                                      phone varchar(11),
