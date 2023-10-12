@@ -18,7 +18,7 @@ BEGIN
                              gs.good_type_id,
                              gs.description,
                              gs.selling_price,
-                             gs.staff_id,
+                             gs.ch_staff_id,
                              gs.dt,
                              gs.ch_dt
                       FROM whsync.goodsssync gs

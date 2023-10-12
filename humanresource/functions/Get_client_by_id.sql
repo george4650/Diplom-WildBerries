@@ -19,12 +19,11 @@ BEGIN
                      c.surname,
                      c.phone,
                      c.email,
-                     cs.ransom_amount,
+                     c.ransom_amount,
                      ct.name as card_name,
                      ct.discount
               FROM humanresource.clients c
-                       INNER JOIN humanresource.cards cs on c.client_id = cs.client_id
-                       INNER JOIN dictionary.cardtypes ct on cs.card_type_id = ct.card_type_id
+                       INNER JOIN dictionary.cardtypes ct on c.card_type_id = ct.card_type_id
               WHERE c.client_id = _client_id) res;
 
 END

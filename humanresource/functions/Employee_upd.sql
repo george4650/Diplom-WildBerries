@@ -83,7 +83,7 @@ BEGIN
                                                 patronymic,
                                                 phone,
                                                 email,
-                                                staff_id,
+                                                ch_staff_id,
                                                 ch_dt)
     SELECT ic.employee_id,
            ic.shop_id,

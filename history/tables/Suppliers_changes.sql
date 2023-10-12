@@ -1,5 +1,3 @@
-drop table history.supplierschanges
-
 CREATE TABLE IF NOT EXISTS history.supplierschanges
 (
     log_id      bigserial
@@ -9,6 +7,6 @@ CREATE TABLE IF NOT EXISTS history.supplierschanges
     phone       VARCHAR(11)  NOT NULL,
     email       varchar(50),
     deleted_at  timestamptz,
-    staff_id    INT          NOT NULL,
+    ch_staff_id INT          NOT NULL,
     ch_dt       TIMESTAMPTZ  NOT NULL
 );

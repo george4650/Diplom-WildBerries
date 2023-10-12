@@ -15,7 +15,7 @@ BEGIN
                      s.discount,
                      s.dt
               FROM sales.sales s
-                       inner join humanresource.cards c on s.card_id = c.card_id
+                       inner join humanresource.clients c on s.card_id = c.card_id
                        inner join petshop.shops sh on sh.shop_id = s.shop_id
               WHERE c.card_id = _card_id
                 AND s.dt::date >= COALESCE(_start_date, (now() - interval '100' YEAR))

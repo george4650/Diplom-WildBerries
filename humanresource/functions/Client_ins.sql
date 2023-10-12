@@ -6,7 +6,6 @@ $$
 DECLARE
     _err_message VARCHAR(500);
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _client_id   integer;
     _first_name  varchar(32);
     _surname     varchar(32);
     _phone       varchar(11);
@@ -23,7 +22,7 @@ BEGIN
         );
 
     SELECT CASE
-               WHEN c.phone = _phone THEN 'Клиент с таким номером уже существует'
+               WHEN c.phone = _phone AND c.is_deleted = false THEN 'Клиент с таким номером уже существует'
                END
     INTO _err_message
     FROM humanresource.clients c;
@@ -33,43 +32,51 @@ BEGIN
     END IF;
 
 
-    INSERT INTO humanresource.clients (client_id,
-                                       first_name,
-                                       surname,
-                                       phone,
-                                       email)
-    SELECT nextval('humanresource.client_sq') as client_id,
-           _first_name,
-           _surname,
-           _phone,
-           _email
-    RETURNING client_id INTO _client_id;
+    WITH cte_ins AS (
+        INSERT INTO humanresource.clients as c (client_id,
+                                                card_id,
+                                                card_type_id,
+                                                first_name,
+                                                surname,
+                                                phone,
+                                                email,
+                                                employee_id,
+                                                dt)
+            SELECT nextval('humanresource.client_sq') as client_id,
+                   nextval('humanresource.card_sq')   as card_id,
+                   1,
+                   _first_name,
+                   _surname,
+                   _phone,
+                   _email,
+                   _employee_id,
+                   _dt
+            RETURNING c.*)
 
-    INSERT INTO humanresource.cards (card_id,
-                                     client_id,
-                                     card_type_id,
-                                     employee_id,
-                                     dt)
-    SELECT nextval('humanresource.card_sq') as card_id,
-           _client_id,
-           1,
-           _employee_id,
-           _dt;
 
     INSERT INTO history.clientschanges (client_id,
+                                        card_id,
+                                        card_type_id,
                                         first_name,
                                         surname,
                                         phone,
                                         email,
-                                        staff_id,
+                                        employee_id,
+                                        dt,
+                                        ch_staff_id,
                                         ch_dt)
-    SELECT _client_id,
-           _first_name,
-           _surname,
-           _phone,
-           _email,
+    SELECT ci.client_id,
+           ci.card_id,
+           ci.card_type_id,
+           ci.first_name,
+           ci.surname,
+           ci.phone,
+           ci.email,
+           ci.employee_id,
+           ci.dt,
            _employee_id,
-           _dt;
+           _dt
+    FROM cte_ins ci;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

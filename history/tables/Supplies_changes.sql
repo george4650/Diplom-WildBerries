@@ -1,5 +1,3 @@
-drop table history.supplieschanges
-
 CREATE TABLE IF NOT EXISTS history.supplieschanges
 (
     log_id           bigserial

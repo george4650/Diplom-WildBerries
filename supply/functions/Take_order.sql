@@ -40,7 +40,7 @@ BEGIN
     INSERT INTO history.storagechanges (shop_id,
                                         nm_id,
                                         quantity,
-                                        staff_id,
+                                        ch_staff_id,
                                         ch_dt)
     SELECT cu.shop_id,
            cu.nm_id,

@@ -1,10 +1,15 @@
 CREATE TABLE IF NOT EXISTS humanresource.clients
 (
-    client_id  integer
-        CONSTRAINT pk_clients PRIMARY KEY,
-    first_name varchar(32) NOT NULL,
-    surname    varchar(32) NOT NULL,
-    phone      varchar(11) NOT NULL,
-    email      varchar(50),
-    CONSTRAINT uc_clients_phone UNIQUE (phone)
+    client_id     integer,
+    card_id       integer,
+    card_type_id  smallint    NOT NULL,
+    first_name    varchar(32) NOT NULL,
+    surname       varchar(32) NOT NULL,
+    phone         varchar(11) NOT NULL,
+    email         varchar(50),
+    employee_id   integer,
+    ransom_amount numeric(15, 2),
+    dt            timestamptz NOT NULL,
+    is_deleted    boolean default false,
+    CONSTRAINT pk_clients_client_id PRIMARY KEY (client_id, card_id)
 );

@@ -1,5 +1,3 @@
-drop TABLE IF  EXISTS history.goodschanges;
-
 CREATE TABLE IF NOT EXISTS history.goodschanges
 (
     log_id        bigserial
@@ -10,6 +8,6 @@ CREATE TABLE IF NOT EXISTS history.goodschanges
     description   varchar(1500) NOT NULL,
     selling_price numeric(8, 2) NOT NULL,
     dt            timestamptz   NOT NULL,
-    staff_id      INT,
+    ch_staff_id   INT,
     ch_dt         timestamptz   NOT NULL
 );

@@ -36,7 +36,7 @@ BEGIN
                                                description,
                                                selling_price,
                                                dt,
-                                               staff_id,
+                                               ch_staff_id,
                                                ch_dt)
                  SELECT ci.nm_id,
                         ci.name,

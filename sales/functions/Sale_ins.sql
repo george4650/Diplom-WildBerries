@@ -36,7 +36,7 @@ BEGIN
     INSERT INTO history.storagechanges(shop_id,
                                        nm_id,
                                        quantity,
-                                       staff_id,
+                                       ch_staff_id,
                                        ch_dt)
     SELECT cu.shop_id,
            cu.nm_id,
@@ -47,7 +47,7 @@ BEGIN
 
     SELECT ct.discount * _total_price / 100
     INTO _discount
-    FROM humanresource.cards c
+    FROM humanresource.clients c
              INNER JOIN dictionary.cardtypes ct ON c.card_type_id = ct.card_type_id
     WHERE c.card_id = _card_id;
 
@@ -68,7 +68,7 @@ BEGIN
            _discount,
            _dt;
 
-    UPDATE humanresource.cards c
+    UPDATE humanresource.clients c
     SET ransom_amount = c.ransom_amount + _total_price - _discount,
         card_type_id  = ct.card_type_id
     FROM (SELECT ct.card_type_id
