@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.get_supplier_by_id(_supplier_id integer) returns json
+CREATE OR REPLACE FUNCTION supply.get_supplier_by_id(_supplier_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -17,6 +17,5 @@ BEGIN
                      deleted_at
               FROM supply.suppliers c
               WHERE c.supplier_id = _supplier_id) res;
-
 END
 $$;

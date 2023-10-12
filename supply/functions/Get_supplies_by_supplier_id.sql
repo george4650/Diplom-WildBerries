@@ -7,17 +7,18 @@ $$
 BEGIN
 
     RETURN jsonb_build_object('data', jsonb_agg(row_to_json(res)))
-        FROM (SELECT supply_id,
-                     shop_id,
-                     supplier_id,
-                     nm_id,
-                     purchase_price,
-                     quantity,
-                     dt
+        FROM (SELECT s.supply_id,
+                     s.shop_id,
+                     s.supplier_id,
+                     s.supply_info,
+                     s.order_dt,
+                     s.supply_dt,
+                     s.staff_id_ordered,
+                     s.staff_id_tooked
               FROM supply.supplies s
               WHERE s.supplier_id = _supplier_id
-                AND dt::date >= COALESCE(_start_date, (now() - interval '100' YEAR))
-                AND dt::date <= COALESCE(_endDate, (now() + interval '100' YEAR))) res;
+                AND s.order_dt::date >= COALESCE(_start_date, (now() - interval '100' YEAR))
+                AND s.order_dt::date <= COALESCE(_endDate, (now() + interval '100' YEAR))) res;
 
 END
 $$;

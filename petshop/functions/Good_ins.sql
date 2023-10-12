@@ -8,48 +8,63 @@ DECLARE
 BEGIN
 
     WITH cte_ins AS (
-        INSERT INTO petshop.goods (nm_id, name, good_type, description, dt)
-            SELECT nextval('petshop.good_sq') as nm_id,
+        INSERT INTO petshop.goods (nm_id, name, good_type_id, description, selling_price, dt)
+            SELECT COALESCE(s.nm_id, nextval('petshop.nm_sq')) as nm_id,
                    s.name,
-                   s.good_type,
+                   s.good_type_id,
                    s.description,
+                   s.selling_price,
                    _dt
             FROM jsonb_to_record(_src) as s (
+                                             nm_id integer,
                                              name varchar(100),
-                                             good_type integer,
-                                             description varchar(1500)
+                                             good_type_id integer,
+                                             description varchar(1500),
+                                             selling_price numeric(8, 2)
                 )
+            ON CONFLICT (nm_id) DO UPDATE
+                SET name = excluded.name,
+                    good_type_id = excluded.good_type_id,
+                    description = excluded.description,
+                    selling_price = excluded.selling_price
             RETURNING *),
 
          cte_history_ins AS (
              INSERT INTO history.goodschanges (nm_id,
                                                name,
-                                               good_type,
+                                               good_type_id,
                                                description,
-                                               staff_id,
+                                               selling_price,
                                                dt,
+                                               ch_staff_id,
                                                ch_dt)
                  SELECT ci.nm_id,
                         ci.name,
-                        ci.good_type,
+                        ci.good_type_id,
                         ci.description,
+                        ci.selling_price,
+                        ci.dt,
                         _staff_id,
-                        _dt,
                         _dt
                  FROM cte_ins ci
                  RETURNING *)
 
-    INSERT INTO whsync.goodsssync (nm_id,
-                            name,
-                            good_type,
-                            description,
-                            staff_id,
-                            dt,
-                            ch_dt)
+
+    INSERT  INTO whsync.goodsssync (nm_id,
+                                    name,
+                                    good_type_id,
+                                    description,
+                                    selling_price,
+                                    dt,
+                                    staff_id,
+                                    ch_dt,
+                                    sync_dt)
     SELECT ch.nm_id,
            ch.name,
-           ch.good_type,
+           ch.good_type_id,
            ch.description,
+           ch.selling_price,
+           ch.dt,
            _staff_id,
            _dt,
            _dt

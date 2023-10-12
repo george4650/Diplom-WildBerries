@@ -8,10 +8,10 @@ DECLARE
 BEGIN
     SELECT count(*) * 100
     INTO _premium
-    FROM humanresource.cards c
+    FROM humanresource.clients c
     WHERE c.employee_id = _employee_id
       AND EXTRACT(MONTH FROM dt) = EXTRACT(MONTH FROM now())
-      AND deleted_at is null;
+      AND c.is_deleted = false;
 
     RETURN _premium;
 END
