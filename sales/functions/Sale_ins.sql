@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION sales.sale_ins(_sale_info json, _shop_id integer,
-                                          _employee_id integer, _card_id integer) returns json
+                                          _staff_id integer, _card_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -66,7 +66,7 @@ BEGIN
     SELECT cu.shop_id,
            cu.nm_id,
            cu.quantity,
-           _employee_id,
+           _staff_id,
            _dt
     FROM cte_upd cu;
 
@@ -91,7 +91,7 @@ BEGIN
                                   dt)
     SELECT nextval('sales.sale_sq') as sale_id,
            _card_id,
-           _employee_id,
+           _staff_id,
            _shop_id,
            _sale_info,
            _total_price,
@@ -138,7 +138,7 @@ BEGIN
            cu.employee_id,
            cu.ransom_amount,
            cu.dt,
-           _employee_id,
+           _staff_id,
            _dt
     FROM cte_upd cu;
 

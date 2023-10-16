@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION sales.sales_get_by_param(_sale_id integer, _card_id integer, _employee_id integer,
-                                                    _start_date date, _endDate date) returns json
+CREATE OR REPLACE FUNCTION sales.sales_get_by_param(_sale_id integer, _card_id integer, _staff_id integer,
+                                                    _start_date date, _end_date date) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -18,9 +18,9 @@ BEGIN
               FROM sales.sales s
               WHERE s.sale_id     = COALESCE(_sale_id, s.sale_id)
                 AND s.card_id     = COALESCE(_card_id, s.card_id)
-                AND s.employee_id = COALESCE(_employee_id, s.employee_id)
+                AND s.employee_id = COALESCE(_staff_id, s.employee_id)
                 AND s.dt         >= COALESCE(_start_date, s.dt)
-                AND s.dt         <= COALESCE(_endDate, s.dt)) res;
+                AND s.dt         <= COALESCE(_end_date, s.dt)) res;
 
 END
 $$;

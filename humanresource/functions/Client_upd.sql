@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.client_upd(_src jsonb, _employee_id integer) returns json
+CREATE OR REPLACE FUNCTION humanresource.client_upd(_src jsonb, _staff_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -80,7 +80,7 @@ BEGIN
                    _surname,
                    _phone,
                    _email,
-                   _employee_id,
+                   _staff_id,
                    _dt
             ON CONFLICT (client_id) DO UPDATE
                 SET card_id    = excluded.card_id,
@@ -112,7 +112,7 @@ BEGIN
            ci.email,
            ci.employee_id,
            ci.dt,
-           _employee_id,
+           _staff_id,
            _dt
     FROM cte_ins ci;
 
