@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS history.clientschanges
     employee_id   integer,
     ransom_amount numeric(15, 2),
     dt            timestamptz NOT NULL,
-    is_deleted    boolean default false,
     ch_staff_id   integer,
     ch_dt         timestamptz NOT NULL
 );

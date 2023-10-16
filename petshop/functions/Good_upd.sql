@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION petshop.good_ins(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION petshop.good_upd(_src jsonb, _staff_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -56,7 +56,7 @@ BEGIN
                                     description,
                                     selling_price,
                                     dt,
-                                    staff_id,
+                                    ch_staff_id,
                                     ch_dt,
                                     sync_dt)
     SELECT ch.nm_id,

@@ -41,7 +41,7 @@ BEGIN
     IF _deleted_at IS NOT NULL THEN
 
         UPDATE humanresource.employees e
-        SET deleted_at = _dt
+        SET deleted_at = _deleted_at
         WHERE e.employee_id = _employee_id;
 
         RETURN JSONB_BUILD_OBJECT('data', NULL);
@@ -65,7 +65,7 @@ BEGIN
                    _patronymic,
                    _phone,
                    _email
-            ON CONFLICT (employee_id) DO UPDATE
+            ON CONFLICT (employee_id, shop_id) DO UPDATE
                 SET shop_id = excluded.shop_id,
                     post_id = excluded.post_id,
                     first_name = excluded.first_name,

@@ -9,19 +9,19 @@ DECLARE
 BEGIN
 
     WITH cte_upd AS (
-        UPDATE petshop.storage
-            SET quantity = s.quantity
-            FROM (SELECT shop_id,
-                         nm_id,
-                         quantity
+        UPDATE petshop.storage st
+            SET quantity = res.quantity
+            FROM (SELECT s.shop_id,
+                         s.nm_id,
+                         s.quantity
                   FROM jsonb_to_record(_src) as s (
                                                    shop_id integer,
                                                    nm_id integer,
                                                    quantity integer
-                      )) as s
-            WHERE shop_id = s.shop_id
-                AND nm_id = s.nm_id
-            RETURNING *)
+                      )) as res
+            WHERE st.shop_id = res.shop_id
+                AND st.nm_id = res.nm_id
+            RETURNING st.*)
 
     INSERT INTO history.storagechanges(shop_id,
                                        nm_id,
