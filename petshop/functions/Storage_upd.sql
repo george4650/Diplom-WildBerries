@@ -13,9 +13,9 @@ BEGIN
     SELECT s.shop_id,
            s.nm_id,
            s.quantity
-    INTO   _shop_id,
-           _nm_id,
-           _quantity
+    INTO _shop_id,
+         _nm_id,
+         _quantity
 
     FROM jsonb_to_record(_src) as s (shop_id integer,
                                      nm_id integer,
@@ -23,7 +23,9 @@ BEGIN
         );
 
     IF NOT EXISTS(SELECT 1 FROM petshop.storage st WHERE st.shop_id = _shop_id and st.nm_id = _nm_id) THEN
-        RETURN public.errmessage('petshop.storage_upd', 'товара нет в данном магазине', null);
+        INSERT INTO petshop.storage (shop_id, nm_id, quantity) VALUES (_shop_id, _nm_id, _quantity);
+
+        RETURN JSONB_BUILD_OBJECT('data', NULL);
     END IF;
 
     WITH cte_upd AS (
