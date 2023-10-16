@@ -5,10 +5,11 @@ AS
 $$
 BEGIN
 
-    RETURN JSONB_BUILD_OBJECT('data', json_agg(row_to_json(res))) FROM (SELECT gt.good_type_id,
-                                                                               gt.name
-                                                                        FROM dictionary.goodtypes gt
-                                                                        WHERE good_type_id = COALESCE(_good_type_id, gt.good_type_id)) res;
+    RETURN JSONB_BUILD_OBJECT('data', json_agg(row_to_json(res))) FROM
+        (SELECT gt.good_type_id,
+                gt.name
+         FROM dictionary.goodtypes gt
+         WHERE gt.good_type_id = COALESCE(_good_type_id, gt.good_type_id)) res;
 
 END
 $$;

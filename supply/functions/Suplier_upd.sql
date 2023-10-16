@@ -17,7 +17,11 @@ BEGIN
            s.phone,
            s.email,
            s.deleted_at
-    INTO _supplier_id, _name, _phone, _email, _deleted_at
+    INTO _supplier_id,
+         _name,
+         _phone,
+         _email,
+         _deleted_at
     FROM jsonb_to_record(_src) as s (
                                      supplier_id integer,
                                      name varchar(100),
@@ -26,30 +30,23 @@ BEGIN
                                      deleted_at timestamptz
         );
 
-    IF _deleted_at IS NOT NULL THEN
-
-        UPDATE supply.suppliers
-        SET deleted_at = _dt
-        WHERE supplier_id = _supplier_id;
-
-        RETURN JSONB_BUILD_OBJECT('data', NULL);
-
-    END IF;
-
     WITH ins_cte AS (
         INSERT INTO supply.suppliers AS e (supplier_id,
                                            name,
                                            phone,
-                                           email
+                                           email,
+                                           deleted_at
             )
             SELECT _supplier_id,
                    _name,
                    _phone,
-                   _email
+                   _email,
+                   _deleted_at
             ON CONFLICT (supplier_id) DO UPDATE
-                SET name = excluded.name,
+                SET name  = excluded.name,
                     phone = excluded.phone,
-                    email = excluded.email
+                    email = excluded.email,
+                    deleted_at = excluded.deleted_at
             RETURNING e.*)
 
 
@@ -57,12 +54,14 @@ BEGIN
                                                 name,
                                                 phone,
                                                 email,
+                                                deleted_at,
                                                 ch_staff_id,
                                                 ch_dt)
     SELECT ic.supplier_id,
            ic.name,
            ic.phone,
            ic.email,
+           ic.deleted_at,
            _staff_id,
            _dt
     FROM ins_cte ic;

@@ -5,7 +5,7 @@ AS
 $$
 BEGIN
 
-    INSERT INTO dictionary.goodtypes (name) values (_good_type_name);
+    INSERT INTO dictionary.goodtypes (name) values (_good_type_name) ON CONFLICT (name) DO NOTHING;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

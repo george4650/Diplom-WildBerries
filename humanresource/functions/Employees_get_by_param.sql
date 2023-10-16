@@ -18,9 +18,9 @@ BEGIN
                      humanresource.count_premium(e.employee_id)        as premium_at_month
               FROM humanresource.employees e
               WHERE e.employee_id = COALESCE(_employee_id, e.employee_id)
-                AND e.shop_id = COALESCE(_shop_id, e.shop_id)
-                AND e.post_id = COALESCE(_post_id, e.post_id)
-                AND e.deleted_at is null) res;
+                AND e.shop_id     = COALESCE(_shop_id, e.shop_id)
+                AND e.post_id     = COALESCE(_post_id, e.post_id)
+                AND e.deleted_at IS NULL) res;
 
 END
 $$;

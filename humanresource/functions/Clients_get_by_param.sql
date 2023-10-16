@@ -18,7 +18,7 @@ BEGIN
                      c.dt
               FROM humanresource.clients c
               WHERE c.client_id = COALESCE(_client_id, c.client_id)
-                AND c.card_id = COALESCE(_card_id, c.card_id)
-                AND c.phone = COALESCE(_phone, c.phone)) res;
+                AND c.card_id   = COALESCE(_card_id, c.card_id)
+                AND c.phone     = COALESCE(_phone, c.phone)) res;
 END
 $$;

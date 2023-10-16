@@ -4,30 +4,40 @@ CREATE OR REPLACE FUNCTION petshop.storage_upd(_src jsonb, _staff_id integer) re
 AS
 $$
 DECLARE
-    _dt TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-
+    _dt       TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
+    _shop_id  integer;
+    _nm_id    integer;
+    _quantity integer;
 BEGIN
+
+    SELECT s.shop_id,
+           s.nm_id,
+           s.quantity
+    INTO   _shop_id,
+           _nm_id,
+           _quantity
+
+    FROM jsonb_to_record(_src) as s (shop_id integer,
+                                     nm_id integer,
+                                     quantity integer
+        );
+
+    IF NOT EXISTS(SELECT 1 FROM petshop.storage st WHERE st.shop_id = _shop_id and st.nm_id = _nm_id) THEN
+        RETURN public.errmessage('petshop.storage_upd', 'товара нет в данном магазине', null);
+    END IF;
 
     WITH cte_upd AS (
         UPDATE petshop.storage st
-            SET quantity = res.quantity
-            FROM (SELECT s.shop_id,
-                         s.nm_id,
-                         s.quantity
-                  FROM jsonb_to_record(_src) as s (
-                                                   shop_id integer,
-                                                   nm_id integer,
-                                                   quantity integer
-                      )) as res
-            WHERE st.shop_id = res.shop_id
-                AND st.nm_id = res.nm_id
+            SET quantity = _quantity
+            WHERE st.shop_id = _shop_id
+                AND st.nm_id = _nm_id
             RETURNING st.*)
 
-    INSERT INTO history.storagechanges(shop_id,
-                                       nm_id,
-                                       quantity,
-                                       ch_staff_id,
-                                       ch_dt)
+    INSERT INTO history.storagechanges (shop_id,
+                                        nm_id,
+                                        quantity,
+                                        ch_staff_id,
+                                        ch_dt)
     SELECT cu.shop_id,
            cu.nm_id,
            cu.quantity,

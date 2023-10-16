@@ -23,9 +23,9 @@ BEGIN
                                              selling_price numeric(8, 2)
                 )
             ON CONFLICT (nm_id) DO UPDATE
-                SET name = excluded.name,
-                    good_type_id = excluded.good_type_id,
-                    description = excluded.description,
+                SET name          = excluded.name,
+                    good_type_id  = excluded.good_type_id,
+                    description   = excluded.description,
                     selling_price = excluded.selling_price
             RETURNING *),
 

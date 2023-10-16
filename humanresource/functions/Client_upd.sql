@@ -15,13 +15,13 @@ DECLARE
     _email        varchar(50);
 BEGIN
 
-    SELECT COALESCE(s.client_id, nextval('humanresource.client_sq')) as client_id,
-           nextval('humanresource.card_sq')                          as card_id,
-           card_type_id,
-           first_name,
-           surname,
-           phone,
-           email
+    SELECT COALESCE(c.client_id, nextval('humanresource.client_sq')) as client_id,
+           COALESCE(s.card_id, nextval('humanresource.card_sq'))     as card_id,
+           s.card_type_id,
+           s.first_name,
+           s.surname,
+           s.phone,
+           s.email
     INTO _client_id,
         _card_id,
         _card_type_id,
@@ -32,20 +32,29 @@ BEGIN
 
     FROM jsonb_to_record(_src) as s (
                                      client_id integer,
+                                     card_id integer,
                                      card_type_id smallint,
                                      first_name varchar(32),
                                      surname varchar(32),
                                      phone varchar(11),
                                      email varchar(50)
-        );
+        )
+             LEFT JOIN humanresource.clients c ON c.client_id = s.client_id;
 
     SELECT CASE
-               WHEN EXISTS(SELECT 1 FROM humanresource.clients c WHERE c.phone = _phone) AND _client_id is null
-                   THEN 'Клиент с таким номером уже существует'
+               WHEN EXISTS(SELECT 1
+                           FROM humanresource.clients c
+                           WHERE c.phone = _phone
+                             AND c.client_id = _client_id
+                             AND c.card_id = _card_id)
+                   THEN 'Клиент с таким номером уже учавствует в программе лояльности'
 
-               WHEN EXISTS(SELECT 1 FROM humanresource.clients c WHERE c.phone = _phone)
-                   AND NOT EXISTS(SELECT 1 FROM humanresource.clients c WHERE client_id = _client_id AND c.phone = _phone)
-                   AND _client_id is not null THEN 'Клиент с таким номером уже существует'
+               WHEN EXISTS(SELECT 1
+                           FROM humanresource.clients c
+                           WHERE c.phone = _phone
+                             AND c.card_id != _card_id
+                             AND c.client_id != _client_id)
+                   THEN 'Клиент с таким номером уже существует'
                END
     INTO _err_message;
 
@@ -74,10 +83,11 @@ BEGIN
                    _employee_id,
                    _dt
             ON CONFLICT (client_id) DO UPDATE
-                SET first_name = excluded.first_name,
-                    surname = excluded.surname,
-                    phone = excluded.phone,
-                    email = excluded.email
+                SET card_id    = excluded.card_id,
+                    first_name = excluded.first_name,
+                    surname    = excluded.surname,
+                    phone      = excluded.phone,
+                    email      = excluded.email
             RETURNING c.*)
 
 

@@ -33,36 +33,22 @@ BEGIN
     WHERE s.supply_id = _supply_id;
 
 
-    WITH cte AS (SELECT i.nm_id, i.quantity
-                 FROM jsonb_to_recordset(_supply_info) as i (nm_id integer,
-                                                             quantity integer
-                     ))
-
-
-    --IF NOT EXISTS (SELECT 1
-    --               FROM petshop.storage s
-    --                        LEFT JOIN cte cs ON s.nm_id = cs.nm_id
-    --               WHERE s.nm_id = cte.nm_id
-    --                 AND s.shop_id = _shop_id) THEN
---
-    --END IF; -- невозможно обновить количество товара на складе, если товара на складе не существует
-
     WITH cte_upd AS (
-        UPDATE petshop.storage as st
-            SET quantity = st.quantity + ci.quantity
-            FROM (SELECT ci.nm_id,
-                         ci.quantity
-                  FROM cte ci) as ci
-            WHERE st.shop_id = _shop_id
-                AND st.nm_id = ci.nm_id
-            RETURNING st.shop_id, st.nm_id, st.quantity)
+        INSERT INTO petshop.storage as st (shop_id, nm_id, quantity)
+            SELECT _shop_id, i.nm_id, i.quantity
+            FROM jsonb_to_recordset(_supply_info) as i (nm_id integer,
+                                                        quantity integer
+                )
+            ON CONFLICT (shop_id, nm_id) DO UPDATE
+                SET quantity = st.quantity + excluded.quantity
+            RETURNING st.*)
 
-    INSERT
-    INTO history.storagechanges as st (shop_id,
-                                       nm_id,
-                                       quantity,
-                                       ch_staff_id,
-                                       ch_dt)
+
+    INSERT INTO history.storagechanges as stc (shop_id,
+                                              nm_id,
+                                              quantity,
+                                              ch_staff_id,
+                                              ch_dt)
     SELECT cu.shop_id,
            cu.nm_id,
            cu.quantity,

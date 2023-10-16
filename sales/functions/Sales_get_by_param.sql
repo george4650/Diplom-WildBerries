@@ -16,11 +16,11 @@ BEGIN
                      s.discount,
                      s.dt
               FROM sales.sales s
-              WHERE s.sale_id = COALESCE(_sale_id, s.sale_id)
-                AND s.card_id = COALESCE(_card_id, s.card_id)
+              WHERE s.sale_id     = COALESCE(_sale_id, s.sale_id)
+                AND s.card_id     = COALESCE(_card_id, s.card_id)
                 AND s.employee_id = COALESCE(_employee_id, s.employee_id)
-                AND s.dt >= COALESCE(_start_date, s.dt)
-                AND s.dt <= COALESCE(_endDate, s.dt)) res;
+                AND s.dt         >= COALESCE(_start_date, s.dt)
+                AND s.dt         <= COALESCE(_endDate, s.dt)) res;
 
 END
 $$;
