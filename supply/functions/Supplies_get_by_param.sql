@@ -19,8 +19,8 @@ BEGIN
               WHERE s.supply_id    = COALESCE(_supply_id, s.supply_id)
                 AND s.shop_id      = COALESCE(_shop_id, s.shop_id)
                 AND s.supplier_id  = COALESCE(_supplier_id, s.supplier_id)
-                AND s.order_dt    >= COALESCE(_start_date, s.order_dt)
-                AND s.order_dt    <= COALESCE(_end_date, s.order_dt)) res;
+                AND s.order_dt    >= COALESCE(_start_date::timestamptz, s.order_dt)
+                AND s.order_dt    <= COALESCE(_end_date::timestamptz + interval '1 day', s.order_dt)) res;
 
 END
 $$;

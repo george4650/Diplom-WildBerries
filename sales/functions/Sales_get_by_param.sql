@@ -19,8 +19,8 @@ BEGIN
               WHERE s.sale_id     = COALESCE(_sale_id, s.sale_id)
                 AND s.card_id     = COALESCE(_card_id, s.card_id)
                 AND s.employee_id = COALESCE(_staff_id, s.employee_id)
-                AND s.dt         >= COALESCE(_start_date, s.dt)
-                AND s.dt         <= COALESCE(_end_date, s.dt)) res;
+                AND s.dt         >= COALESCE(_start_date::timestamptz, s.dt)
+                AND s.dt          < COALESCE(_end_date::timestamptz + interval '1 day', s.dt)) res;
 
 END
 $$;
