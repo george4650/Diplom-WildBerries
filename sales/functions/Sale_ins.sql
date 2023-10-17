@@ -7,9 +7,9 @@ $$
 DECLARE
     _err_message       varchar(500);
     _dt                TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _total_price       NUMERIC(8, 2);
-    _discount          NUMERIC(8, 2);
-    _new_ransom_amount NUMERIC(15, 2);
+    _total_price       NUMERIC(8,2);
+    _discount          NUMERIC(8,2);
+    _new_ransom_amount NUMERIC(15,2);
     _new_card_type     SMALLINT;
 BEGIN
 

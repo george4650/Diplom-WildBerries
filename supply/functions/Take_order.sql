@@ -20,20 +20,41 @@ BEGIN
         RETURN public.errmessage('supply.take_order', _err_message, null);
     END IF;
 
+    WITH supplies_upd AS (
+        UPDATE supply.supplies s
+            SET supply_dt = _dt,
+                staff_id_tooked = _staff_id
+            WHERE s.supply_id   = _supply_id
+            RETURNING s.*)
 
-    UPDATE supply.supplies s
-    SET supply_dt       = _dt,
-        staff_id_tooked = _staff_id
-    WHERE s.supply_id = _supply_id;
+    INSERT INTO history.supplieschanges as stc (supply_id,
+                                                shop_id,
+                                                supplier_id,
+                                                supply_info,
+                                                order_dt,
+                                                supply_dt,
+                                                staff_id_ordered,
+                                                staff_id_tooked,
+                                                ch_dt)
+    SELECT cu.supply_id,
+           cu.shop_id,
+           cu.supplier_id,
+           cu.supply_info,
+           cu.order_dt,
+           cu.supply_dt,
+           cu.staff_id_ordered,
+           cu.staff_id_tooked,
+           _dt
+    FROM supplies_upd cu;
 
 
     SELECT s.supply_info, s.shop_id
-    INTO _supply_info,_shop_id
+    INTO _supply_info, _shop_id
     FROM supply.supplies s
     WHERE s.supply_id = _supply_id;
 
 
-    WITH cte_upd AS (
+    WITH storage_upd AS (
         INSERT INTO petshop.storage as st (shop_id, nm_id, quantity)
             SELECT _shop_id, i.nm_id, i.quantity
             FROM jsonb_to_recordset(_supply_info) as i (nm_id integer,
@@ -45,16 +66,16 @@ BEGIN
 
 
     INSERT INTO history.storagechanges as stc (shop_id,
-                                              nm_id,
-                                              quantity,
-                                              ch_staff_id,
-                                              ch_dt)
+                                               nm_id,
+                                               quantity,
+                                               ch_staff_id,
+                                               ch_dt)
     SELECT cu.shop_id,
            cu.nm_id,
            cu.quantity,
            _staff_id,
            _dt
-    FROM cte_upd cu;
+    FROM storage_upd cu;
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END

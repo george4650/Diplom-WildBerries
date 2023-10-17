@@ -80,28 +80,58 @@ select supply.suppliers_get_by_param(_supplier_id := 1)
 
 ### Сделать заказ
 ```sql
-select  supply.make_order('[{
-  "shop_id": 1,
-  "supplier_id": 2,
-  "supply_info": [{
-  "nm_id": 9,
-  "purchase_price": 1000,
-  "quantity": 2}]
-},
+select  supply.make_order('
 {
   "shop_id": 1,
   "supplier_id": 2,
-   "supply_info": [{
-  "nm_id": 10,
-  "purchase_price": 1000,
-  "quantity": 2}]
-}]'::jsonb, _staff_id := 2);
+  "supply_info": [
+        {
+            "nm_id": 9,
+            "purchase_price": 1000,
+            "quantity": 2 
+        }
+  ]
+}'::jsonb, _staff_id := 2);
 ```
 
 Пример ответа при правильном выполнении:
 ```jsonb
 {"data" : null}
 ```
+
+### Отредактировать заказ (по supply_id)
+```sql
+select  supply.make_order('
+{ 
+  "supply_id": 1,
+  "shop_id": 1,
+  "supplier_id": 2,
+  "supply_info": [
+        {
+            "nm_id": 9,
+            "purchase_price": 10000,
+            "quantity": 2 
+        }
+  ]
+}'::jsonb, _staff_id := 2);
+```
+
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+Примеры ошибок
+```jsonb 
+{
+  "errors": [
+    {
+     "error": "supply.take_order", "detail": null, 
+     "message": "Данная поставка уже принята"
+    }
+  ]
+}
+```
+
 ### Принять заказ
 ```sql
 select supply.take_order(_supply_id := 1, _staff_id := 2);
