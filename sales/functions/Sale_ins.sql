@@ -28,13 +28,13 @@ BEGIN
     SELECT CASE
                WHEN NOT EXISTS(SELECT 1
                                FROM petshop.storage st
-                                        LEFT JOIN tmp t on st.nm_id = t.nm_id
+                                        INNER JOIN tmp t on st.nm_id = t.nm_id
                                WHERE st.shop_id = _shop_id)
                    THEN 'товара нет в данном магазине'
 
                WHEN EXISTS(SELECT 1
                            FROM petshop.storage s
-                                    left JOIN tmp ON tmp.nm_id = s.nm_id
+                                    INNER JOIN tmp ON tmp.nm_id = s.nm_id
                            WHERE s.quantity - tmp.quantity < 0
                              AND s.shop_id = _shop_id)
                    THEN 'товара нет в наличии в данном магазине'
