@@ -23,10 +23,23 @@ BEGIN
         );
 
     IF NOT EXISTS(SELECT 1 FROM petshop.storage st WHERE st.shop_id = _shop_id and st.nm_id = _nm_id) THEN
+
         INSERT INTO petshop.storage (shop_id, nm_id, quantity) VALUES (_shop_id, _nm_id, _quantity);
+
+        INSERT INTO history.storagechanges (shop_id,
+                                            nm_id,
+                                            quantity,
+                                            ch_staff_id,
+                                            ch_dt)
+        SELECT _shop_id,
+               _nm_id,
+               _quantity,
+               _staff_id,
+               _dt;
 
         RETURN JSONB_BUILD_OBJECT('data', NULL);
     END IF;
+
 
     WITH cte_upd AS (
         UPDATE petshop.storage st
