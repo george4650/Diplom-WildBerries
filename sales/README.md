@@ -4,6 +4,17 @@
 
 # Продажи
 
+### В таблице sales поле sale_info храниться в формате json
+```jsonb
+[
+ {
+  "nm_id": 1, 
+  "quantity": 99, 
+  "product_price": 9000
+ }
+]
+```
+
 ### Продать товары
 ```sql
 select  sales.sale_ins('[
