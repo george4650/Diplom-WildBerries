@@ -1,5 +1,3 @@
-DROP FUNCTION supply.supplies_get_by_param(integer,integer,integer,date,date)
-
 CREATE OR REPLACE FUNCTION supply.supplies_get_by_param(_supply_id integer, _shop_id integer, _supplier_id integer,
                                                         _start_date date, _end_date date) returns json
     SECURITY DEFINER
