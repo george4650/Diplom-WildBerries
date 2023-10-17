@@ -43,9 +43,9 @@ BEGIN
                    _email,
                    _deleted_at
             ON CONFLICT (supplier_id) DO UPDATE
-                SET name  = excluded.name,
-                    phone = excluded.phone,
-                    email = excluded.email,
+                SET name       = excluded.name,
+                    phone      = excluded.phone,
+                    email      = excluded.email,
                     deleted_at = excluded.deleted_at
             RETURNING e.*)
 
