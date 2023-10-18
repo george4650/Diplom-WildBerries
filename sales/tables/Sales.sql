@@ -10,3 +10,5 @@ CREATE TABLE IF NOT EXISTS sales.sales
     discount    numeric(8, 2),
     dt          TIMESTAMPTZ   NOT NULL
 );
+
+CREATE INDEX sales_idx ON sales.sales (sale_id)

@@ -50,7 +50,7 @@ select dictionary.post_get_by_param_id(_post_id := 1)
 {"data": [{"name": "HR", "salary": 35000.00, "post_id": 1}]}
 ```
 
-### Получить инфо по бонусным картам
+### Получить инфо о всех типах бонусных карт
 ```sql
 select dictionary.type_card_get_by_param_id(_type_card_id := null)
 ```

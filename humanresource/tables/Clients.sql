@@ -12,3 +12,5 @@ CREATE TABLE IF NOT EXISTS humanresource.clients
     dt            timestamptz NOT NULL,
     CONSTRAINT pk_clients_client_id PRIMARY KEY (client_id)
 );
+
+CREATE INDEX clients_idx ON  humanresource.clients (client_id, card_id)

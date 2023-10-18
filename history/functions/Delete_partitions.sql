@@ -39,5 +39,3 @@ BEGIN
 
 END;
 $$;
-
-select history.delete_partitions('storagechanges')
