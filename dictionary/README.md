@@ -34,7 +34,7 @@ select dictionary.good_type_ins('Корм для собак');
 
 ### Получить инфо о всех должностях в магазине
 ```sql
-select dictionary.post_get_by_param_id(_post_id := null)
+select dictionary.post_get_by_param(_post_id := null)
 ```
 Пример ответа при правильном выполнении:
 ```jsonb
@@ -43,7 +43,7 @@ select dictionary.post_get_by_param_id(_post_id := null)
 
 ### Получить инфо о должности по id
 ```sql
-select dictionary.post_get_by_param_id(_post_id := 1)
+select dictionary.post_get_by_param(_post_id := 1)
 ```
 Пример ответа при правильном выполнении:
 ```jsonb
@@ -52,7 +52,7 @@ select dictionary.post_get_by_param_id(_post_id := 1)
 
 ### Получить инфо о всех типах бонусных карт
 ```sql
-select dictionary.type_card_get_by_param_id(_type_card_id := null)
+select dictionary.type_card_get_by_param(_type_card_id := null)
 ```
 Пример ответа при правильном выполнении:
 ```jsonb

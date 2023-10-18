@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dictionary.post_get_by_param_id(_post_id integer) returns json
+CREATE OR REPLACE FUNCTION dictionary.post_get_by_param(_post_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
