@@ -44,7 +44,8 @@ BEGIN
                                      phone varchar(11),
                                      email varchar(50),
                                      deleted_at TIMESTAMPTZ
-        );
+        )
+    LEFT JOIN humanresource.employees e ON s.employee_id = e.employee_id;
 
     WITH ins_cte AS (
         INSERT INTO humanresource.employees AS e (employee_id,

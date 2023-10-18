@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 
     WITH cte_ins AS (
-        INSERT INTO petshop.goods (nm_id, name, good_type_id, description, selling_price, dt)
+        INSERT INTO petshop.goods as g (nm_id, name, good_type_id, description, selling_price, dt)
             SELECT COALESCE(s.nm_id, nextval('petshop.nm_sq')) as nm_id,
                    s.name,
                    s.good_type_id,
@@ -22,12 +22,13 @@ BEGIN
                                              description varchar(1500),
                                              selling_price numeric(8, 2)
                 )
+                     LEFT JOIN petshop.goods g ON g.nm_id = s.nm_id
             ON CONFLICT (nm_id) DO UPDATE
-                SET name          = excluded.name,
-                    good_type_id  = excluded.good_type_id,
-                    description   = excluded.description,
+                SET name = excluded.name,
+                    good_type_id = excluded.good_type_id,
+                    description = excluded.description,
                     selling_price = excluded.selling_price
-            RETURNING *),
+            RETURNING g.*),
 
          cte_history_ins AS (
              INSERT INTO history.goodschanges (nm_id,
@@ -50,15 +51,16 @@ BEGIN
                  RETURNING *)
 
 
-    INSERT  INTO whsync.goodsssync (nm_id,
-                                    name,
-                                    good_type_id,
-                                    description,
-                                    selling_price,
-                                    dt,
-                                    ch_staff_id,
-                                    ch_dt,
-                                    sync_dt)
+    INSERT
+    INTO whsync.goodsssync (nm_id,
+                            name,
+                            good_type_id,
+                            description,
+                            selling_price,
+                            dt,
+                            ch_staff_id,
+                            ch_dt,
+                            sync_dt)
     SELECT ch.nm_id,
            ch.name,
            ch.good_type_id,

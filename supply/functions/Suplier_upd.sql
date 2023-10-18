@@ -4,31 +4,8 @@ CREATE OR REPLACE FUNCTION supply.supplier_upd(_src jsonb, _staff_id integer) re
 AS
 $$
 DECLARE
-    _dt          timestamptz := now() AT TIME ZONE 'Europe/Moscow';
-    _supplier_id integer;
-    _name        varchar(100);
-    _phone       varchar(11);
-    _email       varchar(50);
-    _deleted_at  timestamptz;
+    _dt timestamptz := now() AT TIME ZONE 'Europe/Moscow';
 BEGIN
-
-    SELECT COALESCE(supplier_id, nextval('supply.supplier_sq')) as supplier_id,
-           s.name,
-           s.phone,
-           s.email,
-           s.deleted_at
-    INTO _supplier_id,
-         _name,
-         _phone,
-         _email,
-         _deleted_at
-    FROM jsonb_to_record(_src) as s (
-                                     supplier_id integer,
-                                     name varchar(100),
-                                     phone varchar(11),
-                                     email varchar(50),
-                                     deleted_at timestamptz
-        );
 
     WITH ins_cte AS (
         INSERT INTO supply.suppliers AS e (supplier_id,
@@ -37,26 +14,35 @@ BEGIN
                                            email,
                                            deleted_at
             )
-            SELECT _supplier_id,
-                   _name,
-                   _phone,
-                   _email,
-                   _deleted_at
+            SELECT COALESCE(s.supplier_id, nextval('supply.supplier_sq')) as supplier_id,
+                   s.name,
+                   s.phone,
+                   s.email,
+                   s.deleted_at
+            FROM jsonb_to_record(_src) as s (
+                                             supplier_id integer,
+                                             name varchar(100),
+                                             phone varchar(11),
+                                             email varchar(50),
+                                             deleted_at timestamptz
+                )
+                     LEFT JOIN supply.suppliers sp ON sp.supplier_id = s.supplier_id
             ON CONFLICT (supplier_id) DO UPDATE
-                SET name       = excluded.name,
-                    phone      = excluded.phone,
-                    email      = excluded.email,
+                SET name  = excluded.name,
+                    phone = excluded.phone,
+                    email = excluded.email,
                     deleted_at = excluded.deleted_at
             RETURNING e.*)
 
 
-    INSERT INTO history.supplierschanges AS ec (supplier_id,
-                                                name,
-                                                phone,
-                                                email,
-                                                deleted_at,
-                                                ch_staff_id,
-                                                ch_dt)
+    INSERT
+    INTO history.supplierschanges AS ec (supplier_id,
+                                         name,
+                                         phone,
+                                         email,
+                                         deleted_at,
+                                         ch_staff_id,
+                                         ch_dt)
     SELECT ic.supplier_id,
            ic.name,
            ic.phone,

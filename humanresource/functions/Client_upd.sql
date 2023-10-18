@@ -15,8 +15,8 @@ DECLARE
     _email        varchar(50);
 BEGIN
 
-    SELECT COALESCE(c.client_id, nextval('humanresource.client_sq')) as client_id,
-           COALESCE(s.card_id, nextval('humanresource.card_sq'))     as card_id,
+    SELECT COALESCE(cl.client_id, nextval('humanresource.client_sq')) as client_id,
+           COALESCE(s.card_id, nextval('humanresource.card_sq'))      as card_id,
            s.card_type_id,
            s.first_name,
            s.surname,
@@ -39,7 +39,8 @@ BEGIN
                                      phone varchar(11),
                                      email varchar(50)
         )
-             LEFT JOIN humanresource.clients c ON c.client_id = s.client_id;
+             LEFT JOIN humanresource.clients cl ON cl.client_id = s.client_id
+             LEFT JOIN humanresource.clients cd ON cd.card_id = s.card_id;
 
     SELECT CASE
                WHEN EXISTS(SELECT 1
@@ -83,7 +84,7 @@ BEGIN
                    _staff_id,
                    _dt
             ON CONFLICT (client_id) DO UPDATE
-                SET card_id    = excluded.card_id,
+                SET card_id = excluded.card_id,
                     first_name = excluded.first_name,
                     surname    = excluded.surname,
                     phone      = excluded.phone,
