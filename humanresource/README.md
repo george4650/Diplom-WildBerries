@@ -25,7 +25,7 @@ SELECT humanresource.employee_upd('{
 ### Редактирование данных по существующему сотруднику (по client_id, shop_id)
 ```sql
 SELECT humanresource.employee_upd('{
-    "client_id": 1,
+    "employee_id": 1,
     "shop_id": 1,
     "post_id": 1,
     "first_name": "Елена",
@@ -44,7 +44,7 @@ SELECT humanresource.employee_upd('{
 ### Удаление сотрудника (по client_id, shop_id)
 ```sql
 SELECT humanresource.employee_upd('{
-    "client_id": 1,
+    "employee_id": 1,
     "shop_id": 1,
     "deleted_at": "01.01.2025"
 }'::jsonb, _staff_id := 1);
