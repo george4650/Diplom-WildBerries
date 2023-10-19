@@ -16,7 +16,7 @@ DECLARE
 BEGIN
 
     SELECT COALESCE(cl.client_id, nextval('humanresource.client_sq')) as client_id,
-           COALESCE(s.card_id, nextval('humanresource.card_sq'))      as card_id,
+           COALESCE(cd.card_id, nextval('humanresource.card_sq'))     as card_id,
            s.card_type_id,
            s.first_name,
            s.surname,
@@ -46,16 +46,9 @@ BEGIN
                WHEN EXISTS(SELECT 1
                            FROM humanresource.clients c
                            WHERE c.phone = _phone
-                             AND c.client_id = _client_id
-                             AND c.card_id = _card_id)
+                             AND c.client_id != _client_id
+                             AND c.card_id != _card_id)
                    THEN 'Клиент с таким номером уже учавствует в программе лояльности'
-
-               WHEN EXISTS(SELECT 1
-                           FROM humanresource.clients c
-                           WHERE c.phone = _phone
-                             AND c.card_id != _card_id
-                             AND c.client_id != _client_id)
-                   THEN 'Клиент с таким номером уже существует'
                END
     INTO _err_message;
 

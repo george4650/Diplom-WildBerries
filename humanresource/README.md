@@ -107,7 +107,7 @@ SELECT humanresource.client_upd('{
 {
  "errors": [
     {
-    "error": "humanresource.client_upd", "detail": null, "message": "Клиент с таким номером уже существует"
+    "error": "humanresource.client_upd", "detail": null, "message": "Клиент с таким номером уже учавствует в программе лояльности"
     }
   ]
 }
