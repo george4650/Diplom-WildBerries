@@ -160,7 +160,7 @@ SELECT humanresource.client_upd('{
 
 ### Пример: по номеру телефона
 ```sql
-select humanresource.clients_get_by_param(_client_id := null, _card_id := null, _phone := '74943434')
+select humanresource.clients_get_by_param(_client_id := null, _card_id := null, _phone := '79537954522')
 ```
 Пример ответа при правильном выполнении:
 ```jsonb
