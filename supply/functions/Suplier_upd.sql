@@ -64,8 +64,7 @@ BEGIN
         INSERT INTO supply.suppliers AS e (supplier_id,
                                            name,
                                            phone,
-                                           email,
-                                           deleted_at
+                                           email
             )
             SELECT _supplier_id, _name, _phone, _email
             ON CONFLICT (supplier_id) DO UPDATE
@@ -79,14 +78,12 @@ BEGIN
                                                 name,
                                                 phone,
                                                 email,
-                                                deleted_at,
                                                 ch_staff_id,
                                                 ch_dt)
     SELECT ic.supplier_id,
            ic.name,
            ic.phone,
            ic.email,
-           ic.deleted_at,
            _staff_id,
            _dt
     FROM ins_cte ic;
