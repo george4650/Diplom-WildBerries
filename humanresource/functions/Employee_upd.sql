@@ -16,7 +16,7 @@ DECLARE
     _deleted_at  TIMESTAMPTZ;
 BEGIN
 
-    SELECT COALESCE(s.employee_id, nextval('humanresource.employee_sq')) as employee_id,
+    SELECT COALESCE(e.employee_id, nextval('humanresource.employee_sq')) as employee_id,
            s.shop_id,
            s.post_id,
            s.first_name,
