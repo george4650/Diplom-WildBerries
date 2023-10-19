@@ -36,10 +36,8 @@ select  sales.sale_ins('[
 {
   "errors": [
     {
-      {
-        "error": "sales.sale_ins", "detail": null, 
-        "message": "товара нет в данном магазине"
-      }
+      "error": "sales.sale_ins", "detail": null,
+      "message": "товара нет в данном магазине"
     }
   ]
 }
