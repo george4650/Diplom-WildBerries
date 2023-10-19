@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION supply.get_suppliers() returns json
+CREATE OR REPLACE FUNCTION supply.suppliers_get_by_param(_supplier_id integer) returns json
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -11,7 +11,8 @@ BEGIN
                      phone,
                      email,
                      deleted_at
-              FROM supply.suppliers c) res;
+              FROM supply.suppliers c
+              WHERE c.supplier_id = COALESCE(_supplier_id, c.supplier_id)) res;
 
 END
 $$;

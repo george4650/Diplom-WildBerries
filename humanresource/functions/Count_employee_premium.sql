@@ -10,8 +10,7 @@ BEGIN
     INTO _premium
     FROM humanresource.clients c
     WHERE c.employee_id = _employee_id
-      AND EXTRACT(MONTH FROM dt) = EXTRACT(MONTH FROM now())
-      AND c.is_deleted = false;
+      AND EXTRACT(MONTH FROM dt) = EXTRACT(MONTH FROM now());
 
     RETURN _premium;
 END

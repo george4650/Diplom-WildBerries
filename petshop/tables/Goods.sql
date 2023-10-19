@@ -8,3 +8,5 @@ CREATE TABLE IF NOT EXISTS petshop.goods
     selling_price numeric(8, 2) NOT NULL,
     dt            timestamptz   NOT NULL
 );
+
+CREATE INDEX goods_idx ON  petshop.goods (nm_id)

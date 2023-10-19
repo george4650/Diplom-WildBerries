@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS history.storagechanges
 (
     log_id      bigserial,
-    shop_id     integer,
+    shop_id     smallint,
     nm_id       integer,
     quantity    integer DEFAULT 0,
     ch_staff_id INT,
