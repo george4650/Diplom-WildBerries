@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS humanresource.clients
     employee_id   integer,
     ransom_amount numeric(15, 2) default 0,
     dt            timestamptz NOT NULL,
+    CONSTRAINT pk_clients_client_id UNIQUE (client_id),
     CONSTRAINT pk_clients_client_id PRIMARY KEY (client_id)
 );
 
-CREATE INDEX clients_idx ON  humanresource.clients (client_id, card_id)
+CREATE INDEX clients_idx ON humanresource.clients (client_id, card_id)
