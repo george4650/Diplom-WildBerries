@@ -1,1 +1,1 @@
-create sequence if not exists humanresource.card_sq as integer start with 1;
+CREATE SEQUENCE IF NOT EXISTS humanresource.card_sq AS INTEGER START WITH 1;

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS dictionary.posts
 (
-    post_id smallserial
+    post_id SMALLSERIAL
         CONSTRAINT pk_posts PRIMARY KEY,
-    name    varchar(100)  NOT NULL,
-    salary  numeric(8, 2) NOT NULL
+    name    VARCHAR(100)  NOT NULL,
+    salary  NUMERIC(8, 2) NOT NULL
 );

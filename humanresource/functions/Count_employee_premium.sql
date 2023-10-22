@@ -1,10 +1,10 @@
-CREATE OR REPLACE FUNCTION humanresource.count_premium(_employee_id integer) returns integer
+CREATE OR REPLACE FUNCTION humanresource.count_premium(_employee_id INTEGER) RETURNS INTEGER
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _premium integer;
+    _premium INTEGER;
 BEGIN
     SELECT count(*) * 100
     INTO _premium

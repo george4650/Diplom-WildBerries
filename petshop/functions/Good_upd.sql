@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION petshop.good_upd(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION petshop.good_upd(_src JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -16,11 +16,11 @@ BEGIN
                    s.selling_price,
                    _dt
             FROM jsonb_to_record(_src) as s (
-                                             nm_id integer,
-                                             name varchar(100),
-                                             good_type_id integer,
-                                             description varchar(1500),
-                                             selling_price numeric(8, 2)
+                                             nm_id INTEGER,
+                                             name VARCHAR(100),
+                                             good_type_id INTEGER,
+                                             description VARCHAR(1500),
+                                             selling_price NUMERIC(8, 2)
                 )
                      LEFT JOIN petshop.goods g ON g.nm_id = s.nm_id
             ON CONFLICT (nm_id) DO UPDATE
@@ -51,16 +51,15 @@ BEGIN
                  RETURNING *)
 
 
-    INSERT
-    INTO whsync.goodsssync (nm_id,
-                            name,
-                            good_type_id,
-                            description,
-                            selling_price,
-                            dt,
-                            ch_staff_id,
-                            ch_dt,
-                            sync_dt)
+    INSERT INTO whsync.goodsssync (nm_id,
+                                   name,
+                                   good_type_id,
+                                   description,
+                                   selling_price,
+                                   dt,
+                                   ch_staff_id,
+                                   ch_dt,
+                                   sync_dt)
     SELECT ch.nm_id,
            ch.name,
            ch.good_type_id,

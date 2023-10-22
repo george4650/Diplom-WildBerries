@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION petshop.goods_get_by_param(_nm_id integer, _good_type_id integer,
-                                                      _min_selling_price numeric, _max_selling_price numeric) returns json
+CREATE OR REPLACE FUNCTION petshop.goods_get_by_param(_nm_id INTEGER, _good_type_id INTEGER,
+                                                      _min_selling_price NUMERIC, _max_selling_price NUMERIC) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

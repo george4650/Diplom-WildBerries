@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.clients_get_by_param(_client_id integer, _card_id integer, _phone varchar(11)) returns json
+CREATE OR REPLACE FUNCTION humanresource.clients_get_by_param(_client_id INTEGER, _card_id INTEGER, _phone VARCHAR(11)) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

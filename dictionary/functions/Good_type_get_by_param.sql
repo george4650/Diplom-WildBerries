@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dictionary.good_type_get_by_param(_good_type_id integer) returns json
+CREATE OR REPLACE FUNCTION dictionary.good_type_get_by_param(_good_type_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

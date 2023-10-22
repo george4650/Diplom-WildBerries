@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.client_upd(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION humanresource.client_upd(_src JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -6,13 +6,13 @@ $$
 DECLARE
     _err_message  VARCHAR(500);
     _dt           TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _client_id    integer;
-    _card_id      integer;
-    _card_type_id smallint;
-    _first_name   varchar(32);
-    _surname      varchar(32);
-    _phone        varchar(11);
-    _email        varchar(50);
+    _client_id    INTEGER;
+    _card_id      INTEGER;
+    _card_type_id SMALLINT;
+    _first_name   VARCHAR(32);
+    _surname      VARCHAR(32);
+    _phone        VARCHAR(11);
+    _email        VARCHAR(50);
 BEGIN
 
     SELECT COALESCE(cl.client_id, nextval('humanresource.client_sq')) as client_id,
@@ -31,13 +31,13 @@ BEGIN
         _email
 
     FROM jsonb_to_record(_src) as s (
-                                     client_id integer,
-                                     card_id integer,
-                                     card_type_id smallint,
-                                     first_name varchar(32),
-                                     surname varchar(32),
-                                     phone varchar(11),
-                                     email varchar(50)
+                                     client_id INTEGER,
+                                     card_id INTEGER,
+                                     card_type_id SMALLINT,
+                                     first_name VARCHAR(32),
+                                     surname VARCHAR(32),
+                                     phone VARCHAR(11),
+                                     email VARCHAR(50)
         )
              LEFT JOIN humanresource.clients cl ON cl.client_id = s.client_id
              LEFT JOIN humanresource.clients cd ON cd.card_id = s.card_id;
@@ -67,36 +67,35 @@ BEGIN
                                                 email,
                                                 employee_id,
                                                 dt)
-            SELECT _client_id,
-                   _card_id,
-                   _card_type_id,
-                   _first_name,
-                   _surname,
-                   _phone,
-                   _email,
-                   _staff_id,
-                   _dt
-            ON CONFLICT (client_id) DO UPDATE
-                SET card_id = excluded.card_id,
-                    first_name = excluded.first_name,
-                    surname    = excluded.surname,
-                    phone      = excluded.phone,
-                    email      = excluded.email
-            RETURNING c.*)
+        SELECT _client_id,
+               _card_id,
+               _card_type_id,
+               _first_name,
+               _surname,
+               _phone,
+               _email,
+               _staff_id,
+               _dt
+        ON CONFLICT (client_id) DO UPDATE
+            SET card_id    = excluded.card_id,
+                first_name = excluded.first_name,
+                surname    = excluded.surname,
+                phone      = excluded.phone,
+                email      = excluded.email
+        RETURNING c.*)
 
 
-    INSERT
-    INTO history.clientschanges (client_id,
-                                 card_id,
-                                 card_type_id,
-                                 first_name,
-                                 surname,
-                                 phone,
-                                 email,
-                                 employee_id,
-                                 dt,
-                                 ch_staff_id,
-                                 ch_dt)
+    INSERT INTO history.clientschanges (client_id,
+                                        card_id,
+                                        card_type_id,
+                                        first_name,
+                                        surname,
+                                        phone,
+                                        email,
+                                        employee_id,
+                                        dt,
+                                        ch_staff_id,
+                                        ch_dt)
     SELECT ci.client_id,
            ci.card_id,
            ci.card_type_id,

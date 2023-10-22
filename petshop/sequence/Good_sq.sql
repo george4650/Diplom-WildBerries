@@ -1,1 +1,1 @@
-create sequence if not exists petshop.nm_sq as integer start with 1;
+CREATE SEQUENCE IF NOT EXISTS petshop.nm_sq AS INTEGER START WITH 1;

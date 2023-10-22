@@ -1,20 +1,20 @@
-CREATE OR REPLACE FUNCTION supply.take_order(_supply_id bigint, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION supply.take_order(_supply_id BIGINT, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _err_message varchar(500);
+    _err_message VARCHAR(500);
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _supply_info jsonb;
-    _shop_id     smallint;
+    _supply_info JSONB;
+    _shop_id     SMALLINT;
 BEGIN
 
     SELECT 'Данная поставка уже принята'
     INTO _err_message
     FROM supply.supplies s
     WHERE s.supply_id = _supply_id
-      and supply_dt is not null;
+      AND supply_dt IS NOT NULL;
 
     IF _err_message IS NOT NULL THEN
         RETURN public.errmessage('supply.take_order', _err_message, null);
@@ -57,8 +57,8 @@ BEGIN
     WITH storage_upd AS (
         INSERT INTO petshop.storage as st (shop_id, nm_id, quantity)
             SELECT _shop_id, i.nm_id, i.quantity
-            FROM jsonb_to_recordset(_supply_info) as i (nm_id integer,
-                                                        quantity integer
+            FROM jsonb_to_recordset(_supply_info) as i (nm_id INTEGER,
+                                                        quantity INTEGER
                 )
             ON CONFLICT (shop_id, nm_id) DO UPDATE
                 SET quantity = st.quantity + excluded.quantity

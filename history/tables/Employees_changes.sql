@@ -1,16 +1,16 @@
 CREATE TABLE IF NOT EXISTS history.employeeschanges
 (
-    log_id      bigserial
+    log_id      BIGSERIAL
         CONSTRAINT pk_employeeschanges PRIMARY KEY,
-    employee_id integer,
-    shop_id     smallint,
-    post_id     smallint,
-    first_name  varchar(32) NOT NULL,
-    surname     varchar(32) NOT NULL,
-    patronymic  varchar(32) NOT NULL,
-    phone       varchar(11) NOT NULL,
-    email       varchar(50),
+    employee_id INTEGER,
+    shop_id     SMALLINT,
+    post_id     SMALLINT,
+    first_name  VARCHAR(32) NOT NULL,
+    surname     VARCHAR(32) NOT NULL,
+    patronymic  VARCHAR(32) NOT NULL,
+    phone       VARCHAR(11) NOT NULL,
+    email       VARCHAR(50),
     deleted_at  TIMESTAMPTZ,
-    ch_staff_id INT         NOT NULL,
+    ch_staff_id INTEGER     NOT NULL,
     ch_dt       TIMESTAMPTZ NOT NULL
 );

@@ -1,1 +1,1 @@
-create sequence if not exists humanresource.employee_sq as integer start with 1;
+CREATE SEQUENCE IF NOT EXISTS humanresource.employee_sq AS INTEGER START WITH 1;
