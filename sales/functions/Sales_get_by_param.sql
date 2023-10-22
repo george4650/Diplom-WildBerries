@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION sales.sales_get_by_param(_sale_id integer, _card_id integer, _staff_id integer,
-                                                    _start_date date, _end_date date) returns json
+CREATE OR REPLACE FUNCTION sales.sales_get_by_param(_sale_id INTEGER, _card_id INTEGER, _staff_id INTEGER,
+                                                    _start_date DATE, _end_date DATE) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

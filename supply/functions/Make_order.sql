@@ -1,15 +1,15 @@
-CREATE OR REPLACE FUNCTION supply.make_order(_data jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION supply.make_order(_data JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _err_message varchar(500);
+    _err_message VARCHAR(500);
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _supply_id   bigint;
-    _shop_id     integer;
-    _supplier_id integer;
-    _supply_info jsonb;
+    _supply_id   BIGINT;
+    _shop_id     INTEGER;
+    _supplier_id INTEGER;
+    _supply_info JSONB;
 
 BEGIN
 
@@ -18,10 +18,10 @@ BEGIN
            d.supplier_id,
            d.supply_info
     INTO _supply_id, _shop_id, _supplier_id, _supply_info
-    FROM jsonb_to_record(_data) as d (supply_id bigint,
-                                      shop_id integer,
-                                      supplier_id integer,
-                                      supply_info jsonb
+    FROM jsonb_to_record(_data) as d (supply_id BIGINT,
+                                      shop_id INTEGER,
+                                      supplier_id INTEGER,
+                                      supply_info JSONB
         );
 
 
@@ -29,7 +29,7 @@ BEGIN
     INTO _err_message
     FROM supply.supplies s
     WHERE s.supply_id = _supply_id
-      and supply_dt is not null;
+      AND supply_dt IS NOT NULL;
 
     IF _err_message IS NOT NULL THEN
         RETURN public.errmessage('supply.make_order', _err_message, null);
@@ -43,7 +43,12 @@ BEGIN
                                           supply_info,
                                           order_dt,
                                           staff_id_ordered)
-            SELECT _supply_id, _shop_id, _supplier_id, _supply_info, _dt, _staff_id
+            SELECT _supply_id,
+                   _shop_id,
+                   _supplier_id,
+                   _supply_info,
+                   _dt,
+                   _staff_id
             ON CONFLICT (supply_id) DO UPDATE
                 SET supply_info      = excluded.supply_info,
                     staff_id_ordered = excluded.staff_id_ordered

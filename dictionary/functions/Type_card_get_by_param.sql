@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dictionary.type_card_get_by_param(_type_card_id integer) returns json
+CREATE OR REPLACE FUNCTION dictionary.type_card_get_by_param(_type_card_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

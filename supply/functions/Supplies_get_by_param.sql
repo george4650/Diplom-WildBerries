@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION supply.supplies_get_by_param(_supply_id integer, _shop_id integer, _supplier_id integer,
-                                                        _start_date date, _end_date date) returns json
+CREATE OR REPLACE FUNCTION supply.supplies_get_by_param(_supply_id INTEGER, _shop_id INTEGER, _supplier_id INTEGER,
+                                                        _start_date DATE, _end_date DATE) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

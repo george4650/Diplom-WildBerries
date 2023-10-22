@@ -1,10 +1,10 @@
-CREATE OR REPLACE FUNCTION humanresource.count_employee_bonus(_employee_id integer) returns integer
+CREATE OR REPLACE FUNCTION humanresource.count_employee_bonus(_employee_id INTEGER) RETURNS INTEGER
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _employee_sales_amount integer;
+    _employee_sales_amount INTEGER;
 BEGIN
 
     SELECT SUM(total_price - discount)
@@ -14,12 +14,12 @@ BEGIN
       AND EXTRACT(MONTH FROM dt) = EXTRACT(MONTH FROM now());
 
 
-    return case
-               when _employee_sales_amount < 30000 then 1000
-               when _employee_sales_amount >= 30000 and _employee_sales_amount < 50000 then 2000
-               when _employee_sales_amount >= 50000 and _employee_sales_amount < 70000 then 3000
-               when _employee_sales_amount >= 70000 and _employee_sales_amount < 100000 then 4000
-               when _employee_sales_amount >= 100000 then 5000
-        end;
+    RETURN CASE
+               WHEN _employee_sales_amount < 30000 THEN 1000
+               WHEN _employee_sales_amount >= 30000 AND _employee_sales_amount < 50000 THEN 2000
+               WHEN _employee_sales_amount >= 50000 AND _employee_sales_amount < 70000 THEN 3000
+               WHEN _employee_sales_amount >= 70000 AND _employee_sales_amount < 100000 THEN 4000
+               WHEN _employee_sales_amount >= 100000 THEN 5000
+        END;
 END
 $$;

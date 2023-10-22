@@ -1,1 +1,1 @@
-create sequence if not exists supply.supplier_sq as integer start with 1;
+CREATE SEQUENCE IF NOT EXISTS supply.supplier_sq AS INTEGER START WITH 1;

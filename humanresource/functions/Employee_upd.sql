@@ -1,18 +1,18 @@
-CREATE OR REPLACE FUNCTION humanresource.employee_upd(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION humanresource.employee_upd(_src JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
     _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _employee_id integer;
-    _shop_id     integer;
-    _post_id     smallint;
-    _first_name  varchar(32);
-    _surname     varchar(32);
-    _patronymic  varchar(32);
-    _phone       varchar(11);
-    _email       varchar(50);
+    _employee_id INTEGER;
+    _shop_id     INTEGER;
+    _post_id     SMALLINT;
+    _first_name  VARCHAR(32);
+    _surname     VARCHAR(32);
+    _patronymic  VARCHAR(32);
+    _phone       VARCHAR(11);
+    _email       VARCHAR(50);
     _deleted_at  TIMESTAMPTZ;
 BEGIN
 
@@ -26,23 +26,23 @@ BEGIN
            s.email,
            s.deleted_at
     INTO _employee_id,
-        _shop_id,
-        _post_id,
-        _first_name,
-        _surname,
-        _patronymic,
-        _phone,
-        _email,
-        _deleted_at
+         _shop_id,
+         _post_id,
+         _first_name,
+         _surname,
+         _patronymic,
+         _phone,
+         _email,
+         _deleted_at
     FROM jsonb_to_record(_src) as s (
-                                     employee_id integer,
-                                     shop_id integer,
-                                     post_id smallint,
-                                     first_name varchar(32),
-                                     surname varchar(32),
-                                     patronymic varchar(32),
-                                     phone varchar(11),
-                                     email varchar(50),
+                                     employee_id INTEGER,
+                                     shop_id INTEGER,
+                                     post_id SMALLINT,
+                                     first_name VARCHAR(32),
+                                     surname VARCHAR(32),
+                                     patronymic VARCHAR(32),
+                                     phone VARCHAR(11),
+                                     email VARCHAR(50),
                                      deleted_at TIMESTAMPTZ
         )
              LEFT JOIN humanresource.employees e ON s.employee_id = e.employee_id;
@@ -57,16 +57,16 @@ BEGIN
                 RETURNING e.*)
 
         INSERT INTO history.employeeschanges AS ec (employee_id,
-                                                     shop_id,
-                                                     post_id,
-                                                     first_name,
-                                                     surname,
-                                                     patronymic,
-                                                     phone,
-                                                     email,
-                                                     deleted_at,
-                                                     ch_staff_id,
-                                                     ch_dt)
+                                                    shop_id,
+                                                    post_id,
+                                                    first_name,
+                                                    surname,
+                                                    patronymic,
+                                                    phone,
+                                                    email,
+                                                    deleted_at,
+                                                    ch_staff_id,
+                                                    ch_dt)
         SELECT ic.employee_id,
                ic.shop_id,
                ic.post_id,
@@ -80,7 +80,7 @@ BEGIN
                _dt
         FROM cte_upd ic;
 
-            RETURN JSONB_BUILD_OBJECT('data', NULL);
+        RETURN JSONB_BUILD_OBJECT('data', NULL);
     END IF;
 
     WITH ins_cte AS (
@@ -101,13 +101,13 @@ BEGIN
                    _phone,
                    _email
             ON CONFLICT (employee_id, shop_id) DO UPDATE
-                SET shop_id = excluded.shop_id,
-                    post_id = excluded.post_id,
+                SET shop_id    = excluded.shop_id,
+                    post_id    = excluded.post_id,
                     first_name = excluded.first_name,
-                    surname = excluded.surname,
+                    surname    = excluded.surname,
                     patronymic = excluded.patronymic,
-                    phone = excluded.phone,
-                    email = excluded.email
+                    phone      = excluded.phone,
+                    email      = excluded.email
             RETURNING e.*)
 
     INSERT INTO history.employeeschanges AS ec (employee_id,

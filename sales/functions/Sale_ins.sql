@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION sales.sale_ins(_sale_info json, _shop_id integer,
-                                          _staff_id integer, _card_id integer) returns json
+CREATE OR REPLACE FUNCTION sales.sale_ins(_sale_info JSON, _shop_id INTEGER,
+                                          _staff_id INTEGER, _card_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _err_message       varchar(500);
+    _err_message       VARCHAR(500);
     _dt                TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
     _total_price       NUMERIC(8,2);
     _discount          NUMERIC(8,2);
@@ -19,9 +19,9 @@ BEGIN
            s.quantity,
            s.product_price
     FROM json_to_recordset(_sale_info) AS s (
-                                             nm_id int,
-                                             quantity int,
-                                             product_price numeric(8, 2)
+                                             nm_id INTEGER,
+                                             quantity INTEGER,
+                                             product_price NUMERIC(8, 2)
         );
 
 

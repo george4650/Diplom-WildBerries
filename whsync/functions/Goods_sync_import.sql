@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION whsync.goods_sync_import(_src jsonb) returns json
+CREATE OR REPLACE FUNCTION whsync.goods_sync_import(_src JSONB) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -15,12 +15,12 @@ BEGIN
                         s.dt,
                         ROW_NUMBER() OVER (PARTITION BY s.nm_id ORDER BY s.dt DESC) rn
                  FROM jsonb_to_recordset(_src) as s (
-                                                     nm_id integer,
-                                                     name varchar(100),
-                                                     good_type_id integer,
-                                                     description varchar(1500),
-                                                     selling_price numeric(8, 2),
-                                                     dt timestamptz
+                                                     nm_id INTEGER,
+                                                     name VARCHAR(100),
+                                                     good_type_id INTEGER,
+                                                     description VARCHAR(1500),
+                                                     selling_price NUMERIC(8, 2),
+                                                     dt TIMESTAMPTZ
                      )),
 
      cte_ins AS (

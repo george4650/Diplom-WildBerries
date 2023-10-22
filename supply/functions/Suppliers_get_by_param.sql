@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION supply.suppliers_get_by_param(_supplier_id integer) returns json
+CREATE OR REPLACE FUNCTION supply.suppliers_get_by_param(_supplier_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

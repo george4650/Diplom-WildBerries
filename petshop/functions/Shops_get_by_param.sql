@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION petshop.shops_get_by_param(_shop_id integer) returns json
+CREATE OR REPLACE FUNCTION petshop.shops_get_by_param(_shop_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS

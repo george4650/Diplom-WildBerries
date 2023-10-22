@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION whsync.goods_sync_export(_log_id BIGINT) returns json
+CREATE OR REPLACE FUNCTION whsync.goods_sync_export(_log_id BIGINT) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -12,24 +12,26 @@ BEGIN
     WHERE gs.log_id <= _log_id
       AND gs.sync_dt IS NOT NULL;
 
-    WITH sync_cte AS (SELECT gs.log_id,
-                             gs.nm_id,
-                             gs.name,
-                             gs.good_type_id,
-                             gs.description,
-                             gs.selling_price,
-                             gs.ch_staff_id,
-                             gs.dt,
-                             gs.ch_dt
-                      FROM whsync.goodsssync gs
-                      ORDER BY gs.log_id
-                      LIMIT 1000)
+    WITH sync_cte AS (
+        SELECT gs.log_id,
+               gs.nm_id,
+               gs.name,
+               gs.good_type_id,
+               gs.description,
+               gs.selling_price,
+               gs.ch_staff_id,
+               gs.dt,
+               gs.ch_dt
+        FROM whsync.goodsssync gs
+        ORDER BY gs.log_id
+        LIMIT 1000)
 
-       , cte_upd AS (
-        UPDATE whsync.goodsssync es
-            SET sync_dt = _dt
-            FROM sync_cte sc
-            WHERE es.log_id = sc.log_id)
+
+    , cte_upd AS (
+     UPDATE whsync.goodsssync es
+         SET sync_dt = _dt
+         FROM sync_cte sc
+         WHERE es.log_id = sc.log_id)
 
     SELECT JSONB_BUILD_OBJECT('data', JSONB_AGG(ROW_TO_JSON(sc)))
     INTO _res

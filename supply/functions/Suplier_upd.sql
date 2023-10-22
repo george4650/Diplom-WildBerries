@@ -1,15 +1,15 @@
-CREATE OR REPLACE FUNCTION supply.supplier_upd(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION supply.supplier_upd(_src JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
-    _dt          timestamptz := now() AT TIME ZONE 'Europe/Moscow';
-    _supplier_id integer;
-    _name        varchar(100);
-    _phone       varchar(11);
-    _email       varchar(50);
-    _deleted_at  timestamptz;
+    _dt          TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
+    _supplier_id INTEGER;
+    _name        VARCHAR(100);
+    _phone       VARCHAR(11);
+    _email       VARCHAR(50);
+    _deleted_at  TIMESTAMPTZ;
 BEGIN
 
     SELECT COALESCE(s.supplier_id, nextval('supply.supplier_sq')) as supplier_id,
@@ -18,16 +18,16 @@ BEGIN
            s.email,
            s.deleted_at
     INTO _supplier_id ,
-        _name ,
-        _phone ,
-        _email ,
-        _deleted_at
+         _name ,
+         _phone ,
+         _email ,
+         _deleted_at
     FROM jsonb_to_record(_src) as s (
-                                     supplier_id integer,
-                                     name varchar(100),
-                                     phone varchar(11),
-                                     email varchar(50),
-                                     deleted_at timestamptz
+                                     supplier_id INTEGER,
+                                     name VARCHAR(100),
+                                     phone VARCHAR(11),
+                                     email VARCHAR(50),
+                                     deleted_at TIMESTAMPTZ
         )
              LEFT JOIN supply.suppliers sp ON sp.supplier_id = s.supplier_id;
 
@@ -66,9 +66,12 @@ BEGIN
                                            phone,
                                            email
             )
-            SELECT _supplier_id, _name, _phone, _email
+            SELECT _supplier_id,
+                   _name,
+                   _phone,
+                   _email
             ON CONFLICT (supplier_id) DO UPDATE
-                SET name = excluded.name,
+                SET name  = excluded.name,
                     phone = excluded.phone,
                     email = excluded.email
             RETURNING e.*)

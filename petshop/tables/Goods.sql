@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS petshop.goods
 (
-    nm_id         integer
+    nm_id         INTEGER
         CONSTRAINT pk_goods PRIMARY KEY,
-    name          varchar(100)  NOT NULL,
-    good_type_id  smallint      NOT NULL,
-    description   varchar(1500) NOT NULL,
-    selling_price numeric(8, 2) NOT NULL,
-    dt            timestamptz   NOT NULL
+    name          VARCHAR(100)  NOT NULL,
+    good_type_id  SMALLINT      NOT NULL,
+    description   VARCHAR(1500) NOT NULL,
+    selling_price NUMERIC(8, 2) NOT NULL,
+    dt            TIMESTAMPTZ   NOT NULL
 );
 
-CREATE INDEX goods_idx ON  petshop.goods (nm_id)
+CREATE INDEX goods_idx ON petshop.goods (nm_id)

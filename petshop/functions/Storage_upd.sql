@@ -1,13 +1,13 @@
-CREATE OR REPLACE FUNCTION petshop.storage_upd(_src jsonb, _staff_id integer) returns json
+CREATE OR REPLACE FUNCTION petshop.storage_upd(_src JSONB, _staff_id INTEGER) RETURNS JSON
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
 $$
 DECLARE
     _dt       TIMESTAMPTZ := now() AT TIME ZONE 'Europe/Moscow';
-    _shop_id  integer;
-    _nm_id    integer;
-    _quantity integer;
+    _shop_id  INTEGER;
+    _nm_id    INTEGER;
+    _quantity INTEGER;
 BEGIN
 
     SELECT s.shop_id,
@@ -17,9 +17,9 @@ BEGIN
          _nm_id,
          _quantity
 
-    FROM jsonb_to_record(_src) as s (shop_id integer,
-                                     nm_id integer,
-                                     quantity integer
+    FROM jsonb_to_record(_src) as s (shop_id INTEGER,
+                                     nm_id INTEGER,
+                                     quantity INTEGER
         );
 
     IF NOT EXISTS(SELECT 1 FROM petshop.storage st WHERE st.shop_id = _shop_id and st.nm_id = _nm_id) THEN
